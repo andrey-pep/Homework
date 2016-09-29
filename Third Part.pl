@@ -5,7 +5,7 @@ use warnings;
 
 my @massofmass=();
 my $count=0;
-my $filename = 'text.txt';
+my $filename = 'file.txt';
 open(my $fh, '<', $filename)
         or die "Counld not open file '$filename' $!";
       
