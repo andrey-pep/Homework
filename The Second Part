@@ -1,0 +1,1 @@
+perl -lnaF';' -e 'if(0+($F[4])>1048576){print $F[8]; $a++;}}{print "Files:$.; Big_Files:$a" ;' < file.txt
