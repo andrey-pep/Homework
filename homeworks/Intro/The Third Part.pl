@@ -17,3 +17,5 @@ my @timemas=();
 $count++;
 }
 print Dumper(@massofmass);
+close($fh)
+  or die "Counld not close file '$filename' $!";
