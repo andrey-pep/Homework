@@ -5,17 +5,16 @@ use warnings;
 
 my @massofmass=();
 my $count=0;
-my $filename = 'file.txt';
-open(my $fh, '<', $filename)
-        or die "Counld not open file '$filename' $!";
+my $input = 'text.txt';
+open(my $fl, '<', $input)
+        or die "Counld not open file '$input' $!";
       
-while (my $row = <$fh>) {
+while (my $row = <$fl>) {
 my @timemas=();
 @timemas=split(/;|\n/, $row);
 @massofmass[$count] = \@timemas;
-#print @timemas, "  that\n";
 $count++;
 }
 print Dumper(@massofmass);
-close($fh)
-  or die "Counld not close file '$filename' $!";
+close($fl)
+  or die "Counld not close file '$input' $!";
