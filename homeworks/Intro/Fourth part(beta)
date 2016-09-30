@@ -2,3 +2,14 @@ s
 w $count
 c
 c
+w @timemas
+c
+w @massofmass
+c
+c
+c
+l
+W *
+b 18 Data::Dumper!=0
+c
+q
