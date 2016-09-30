@@ -9,9 +9,9 @@ my $input = 'text.txt';
 open(my $fl, '<', $input)
         or die "Counld not open file '$input' $!";
       
-while (my $row = <$fl>) {
+while (<$fl>) {
 my @timemas=();
-@timemas=split(/;|\n/, $row);
+@timemas=split(/;|\n/, $_);
 @massofmass[$count] = \@timemas;
 $count++;
 }
