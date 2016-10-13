@@ -38,6 +38,7 @@ while ($i <= $#res)
 	{
 		when ($res[$i] =~ /\d/)
 		{
+			$chars[$i] =~ tr/[a-zA-z]//sd;
 			$res[$i] = 0+$res[$i];
 			$res[$i] = "$res[$i]";
 		}
