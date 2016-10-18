@@ -26,6 +26,10 @@ sub tokenize
 {
 	chomp(my $expr = shift);
 	$expr =~ tr/ //sd;
+		if ($expr =~ /\De/)
+	{
+        die "Problems with input\n";
+    }
 	$expr =~ s/[a-df-zA-DF-Z]*//;
 	my @res = split m{((?<!e)[-+]|[*()/^]|\s+)}, $expr;
 
