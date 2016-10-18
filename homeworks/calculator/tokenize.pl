@@ -50,15 +50,16 @@ $i=0;
 
 while ($i <= $#res) 
 {
+	my $next = $res[$i+1];
 	given($res[$i])
 	{
 		when(['-', '+', '^'])
 		{
-			if ($res[$i+1] eq '*' || $res[$i+1] eq '/')
+			if ($next eq '*' || $next eq '/')
 			{
                 die "Used binary operator after unary\n";
             }
-            if (($res[$i+1] eq '(' || $i-1<0) && ($res[$i] ne "^")) 
+            if (($next eq '(' || $i-1<0 || $next eq '+' || $next eq '-') && ($res[$i] ne "^")) 
 				{
 	                	$res[$i] = "U".$res[$i];
 				}
