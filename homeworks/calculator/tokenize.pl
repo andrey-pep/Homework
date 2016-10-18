@@ -59,7 +59,7 @@ while ($i <= $#res)
 			{
                 die "Used binary operator after unary\n";
             }
-            if (($next_ch eq '(' || $i-1<0 || $next_ch eq '+' || $next_ch eq '-') && ($res[$i] ne "^")) 
+            if (($next_ch eq '(' || $i-1<0 || $next_ch eq '+' || $next_ch eq '-' || $next_ch =~ /\d/) && ($res[$i] ne "^") && ($res[$i-1] =~ /\D/)) 
 				{
 	                	$res[$i] = "U".$res[$i];
 				}
