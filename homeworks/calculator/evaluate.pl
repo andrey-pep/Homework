@@ -19,10 +19,21 @@ no warnings 'experimental';
 
 sub evaluate {
 	my $rpn = shift;
-
-	# ...
-
+	my $i = 0;
+	my @calc_stack = ();
+while (my $c=@$rpn[$i])
+{
+	if ($c =~ /\d/) {push(@calc_stack,$c);}
+	if ($c eq '+')
+	{
+		my $first_op = pop(@calc_stack);
+		my $second_op = pop(@calc_stack);
+		push(@calc_stack, $first_op + $second_op);
+	}
+	$i++;
+}
 	return 0;
 }
 
 1;
+
