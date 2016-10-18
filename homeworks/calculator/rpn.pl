@@ -1,10 +1,8 @@
 =head1 DESCRIPTION
-
 Эта функция должна принять на вход арифметическое выражение,
 а на выходе дать ссылку на массив, содержащий обратную польскую нотацию
 Один элемент массива - это число или арифметическая операция
 В случае ошибки функция должна вызывать die с сообщением об ошибке
-
 =cut
 
 use 5.010;
@@ -23,13 +21,13 @@ require "$FindBin::Bin/../lib/tokenize.pl";
 
 sub op_priorit
 {
-	my $op;	
-	$op = shift;
-	if ($op eq "(" || $op eq ")")   { return 0; };
-	if ($op eq "^")                 { return 3; };
-	if ($op eq "/" || $op eq "*")   { return 2; };
-	if ($op eq "U-" || $op eq "U+") { return 4; };
-	if ($op eq "+" || $op eq "-")   { return 1; };
+	my $oper;
+	$oper = shift;
+	if ($oper eq "(" || $oper eq ")")   { return 0; };
+	if ($oper eq "^")                 { return 3; };
+	if ($oper eq "/" || $oper eq "*")   { return 2; };
+	if ($oper eq "U-" || $oper eq "U+") { return 4; };
+	if ($oper eq "+" || $oper eq "-")   { return 1; };
 	42;
 }
 
@@ -37,10 +35,10 @@ sub op_assotiation
 {
 	my $op;
 	$op = shift;
-	my $out;
 	if ($op eq "U+" || $op eq "U-" || $op eq "^") { return 1; };
     if ($op eq "+" || $op eq "*" || $op eq "/" || $op eq "-") { return 0; };
 	if ($op eq "(" || $op eq ")") { return 2; };
+	42;
 }
 
 sub rpn {
@@ -49,6 +47,7 @@ sub rpn {
 	my @stack;
 	my @rpn;
 	my $i=0;
+	my $scope_flag = 0;
 	while (my $c=@$source[$i])
 	{
         if($c =~ /\d/) {push(@rpn,$c);}
@@ -60,6 +59,7 @@ sub rpn {
 				{
                     while (my $el = pop(@stack))
 					{
+						if ($el eq "(") {last;}
                         push(@rpn,$el);
                     }
 				}
@@ -71,6 +71,7 @@ sub rpn {
 				{
                     while (my $el = pop(@stack))
 					{
+						if ($el eq "(") {last;}
                         push(@rpn,$el);
                     }
 				}
@@ -78,15 +79,20 @@ sub rpn {
 			}
 			if (op_assotiation($c) == 2)
 			{
-                if ($c eq "(")
+                 if ($c eq "(")
 				{
 					push(@stack,$c);
+					$scope_flag = 1;
 				}
 				else
 				{
-					while ((my $el = shift(@stack)) ne "(")
+					if ($scope_flag != 1)
+						{die "Problems with scopes\n";}
+					$scope_flag = 0;
+					while ((my $el = pop(@stack)))
 					{
-						push(@rpn,$el);
+						if ($el eq "(") {last;}
+						else {push(@rpn,$el);}
 					}
 				}
             }
@@ -94,7 +100,10 @@ sub rpn {
 		}
 		$i++;
 	}
-	push (@rpn,@stack);
+	while (my $el = pop(@stack))
+	{
+        push(@rpn,$el);
+    }
 	return \@rpn;
 	1;
 }
