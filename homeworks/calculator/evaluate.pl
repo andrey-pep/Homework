@@ -24,19 +24,28 @@ sub evaluate {
 while (my $c=@$rpn[$i])
 {
 	if ($c =~ /\d/) {push(@calc_stack,$c);}
-	if ($c eq '+' || $c eq "U+")
+	if ($c eq '+')
 	{
 		my $first_op = pop(@calc_stack);
 		my $second_op = pop(@calc_stack);
 		push(@calc_stack, $first_op + $second_op);
 	}
-	if ($c eq '-' || $c eq "U-")
+	if ($c eq "U-")
+	{
+		my $first_op = pop(@calc_stack);
+		push(@calc_stack, $first_op * (-1));
+	}
+	if ($c eq "U+")
+	{
+		my $first_op = pop(@calc_stack);
+		push(@calc_stack, abs($first_op));
+	}
+	if ($c eq '-')
 	{
 		my $first_op = pop(@calc_stack);
 		my $second_op = pop(@calc_stack);
 		push(@calc_stack, $second_op - $first_op);
 	}
-	$i++;
 	if ($c eq '*')
 	{
 		my $first_op = pop(@calc_stack);
@@ -55,6 +64,7 @@ while (my $c=@$rpn[$i])
 		my $second_op = pop(@calc_stack);
 		push(@calc_stack, $second_op**$first_op);
 	}
+	$i++;
 }
 	return $calc_stack[0];
 }
