@@ -22,23 +22,25 @@ require "$FindBin::Bin/../lib/tokenize.pl";
 sub op_priorit
 {
 	my $oper;
-	$oper = shift;
+	($oper) = @_;
+	if (!(defined $oper))               { return 0; };
 	if ($oper eq "(" || $oper eq ")")   { return 0; };
-	if ($oper eq "^")                 { return 3; };
+	if ($oper eq "^")                   { return 3; };
 	if ($oper eq "/" || $oper eq "*")   { return 2; };
 	if ($oper eq "U-" || $oper eq "U+") { return 4; };
 	if ($oper eq "+" || $oper eq "-")   { return 1; };
-	42;
+	1;
 }
 
 sub op_assotiation
 {
 	my $op;
-	$op = shift;
-	if ($op eq "U+" || $op eq "U-" || $op eq "^") { return 1; };
+	($op) = @_;
+	if (!(defined $op))                               		  { return 0; };
+	if ($op eq "U+" || $op eq "U-" || $op eq "^") 			  { return 1; };
     if ($op eq "+" || $op eq "*" || $op eq "/" || $op eq "-") { return 0; };
-	if ($op eq "(" || $op eq ")") { return 2; };
-	42;
+	if ($op eq "(" || $op eq ")") 							  { return 2; };
+	1;
 }
 
 sub rpn {
