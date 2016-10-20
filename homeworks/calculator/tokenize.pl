@@ -26,11 +26,11 @@ sub tokenize
 {
 	chomp(my $expr = shift);
 	$expr =~ tr/ //sd;
-		if ($expr =~ /\De/)
+	$expr =~ s/[a-df-zA-DF-Z]*//;
+	if ($expr =~ /\D[e]/)
 	{
         die "Problems with input\n";
     }
-	$expr =~ s/[a-df-zA-DF-Z]*//;
 	my @res = split m{((?<!e)[-+]|[*()/^]|\s+)}, $expr;
 
 while ($i <= $#res) 
@@ -63,10 +63,13 @@ while ($i <= $#res)
 			{
                 die "Used binary operator after unary\n";
             }
-            if (($next_ch eq '(' || $i-1<0 || $next_ch eq '+' || $next_ch eq '-' || $next_ch =~ /\d/) && ($res[$i] ne "^") && ($res[$i-1] =~ /\D/ || $res[$i-1] =~ /\D'\.'?/))  	#однозначно надо упростить 
-				{
-	                	$res[$i] = "U".$res[$i];
-				}
+			if ($res[$i] eq '+' || $res[$i] eq '-')
+			{
+				if (($res[$i-1] =~ /[\D]/ || $i-1<0) && !($res[$i-1] =~ /[\d][\.][\d]/) ) 
+					{
+							$res[$i] = "U".$res[$i];
+					}
+			}
 		}
 	}
 	$i++;
@@ -75,3 +78,4 @@ while ($i <= $#res)
 	1;
 }
 1;
+
