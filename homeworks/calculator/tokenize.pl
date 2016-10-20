@@ -26,36 +26,36 @@ no warnings 'experimental';
 sub tokenize
 {
 	chomp(my $expr = shift);
-	$expr =~ tr/ //sd;
-	$expr =~ s/[a-df-zA-DF-Z]*//;
-	if ($expr =~ /\D[e]/ || $expr =~ /\d[\.]\d[\.]/)
+	$expr =~ tr/ //sd;					#убираем пробелы
+	$expr =~ s/[a-df-zA-DF-Z]*//;		#если встретились лишние буквы, то выкидываем
+	if ($expr =~ /\D[e]/ || $expr =~ /\d[\.]\d[\.]/)		#если e идёт после не-цифры или более 1 точки в цифре
 	{
-        die "Problems with input\n";
+        die "Problems with input\n";		# то закрываем всё
     }
-	my $enough_num = 0;
-	my @res = split m{((?<!e)[-+]|[*()/^]|\s+)}, $expr;
+	my $enough_num = 0;		#счётчик количества цифр, если их не будет, то закроем программу с ошибкой
+	my @res = split m{((?<!e)[-+]|[*()/^]|\s+)}, $expr;		#делим входную строку на токены, которые потом ещё обработаем
 while ($i <= $#res) 
 {
 	given($res[$i])
 	{
-		when ($res[$i] =~ /\d/)
+		when ($res[$i] =~ /\d/)			#запись чисел в массив
 		{
 			$res[$i] = 0+$res[$i];
 			$res[$i] = "$res[$i]";
-			$enough_num += 1;
+			$enough_num += 1;		#это для счётчика чисел
 		}
 		when ([''])
 		{
-			splice (@res,$i,1);
+			splice (@res,$i,1);			#удаление пустых элементов массива
 		}	
 	}
     $i++;
     next;
 }
-if ($enough_num < 1) {die "Problems with input: no numbers\n";};
+if ($enough_num < 1) {die "Problems with input: no numbers\n";};		#выход, если нет чисел
 $i=0;
 
-while ($i <= $#res) 
+while ($i <= $#res) 		#вторая проверка унарных символов
 {
 	my $next_ch = $res[$i+1];
 	given($res[$i])
@@ -64,11 +64,11 @@ while ($i <= $#res)
 		{
 			if ($next_ch eq '*' || $next_ch eq '/')
 			{
-                die "Used binary operator after unary\n";
+                die "Used binary operator after unary\n";		#бинарные не идут после унарных
             }
 			if ($res[$i] eq '+' || $res[$i] eq '-')
 			{
-				if (($res[$i-1] =~ /[\D]/ || $i-1<0) && !($res[$i-1] =~ /[\d][\.][\d]/) ) 
+				if (($res[$i-1] =~ /[\D]/ || $i-1<0) && !($res[$i-1] =~ /[\d][\.][\d]/) ) 	#если унарные + или - , то приписываем U
 					{
 							$res[$i] = "U".$res[$i];
 					}
@@ -77,7 +77,7 @@ while ($i <= $#res)
 	}
 	$i++;
 }
-	$i = 0;
+	$i = 0;			#обнуление счётчика для дальнейших проходов через функцию
 	return \@res;
 	1;
 }
