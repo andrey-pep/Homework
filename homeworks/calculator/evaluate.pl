@@ -66,7 +66,9 @@ while (my $c=@$rpn[$i])
 	}
 	$i++;
 }
+	$i = 0;
 	return $calc_stack[0];
 }
 
 1;
+
