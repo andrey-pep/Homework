@@ -29,7 +29,7 @@ sub tokenize
 	chomp(my $expr = shift);
 	$expr =~ tr/ //sd;
 	$expr =~ s/[a-df-zA-DF-Z]*//;
-	if ($expr =~ /\D[e]/)
+	if ($expr =~ /\D[e]/ || $expr =~ /\d[\.]\d[\.]/)
 	{
         die "Problems with input\n";
     }
@@ -54,7 +54,6 @@ while ($i <= $#res)
     next;
 }
 if ($enough_num < 1) {die "Problems with input: no numbers\n";};
-
 $i=0;
 
 while ($i <= $#res) 
