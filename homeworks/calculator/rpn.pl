@@ -84,13 +84,13 @@ sub rpn {
                  if ($c eq "(")
 				{
 					push(@stack,$c);
-					$scope_flag = 1;
+					$scope_flag += 1;
 				}
 				else
 				{
-					if ($scope_flag != 1)
+					if ($scope_flag == 0)
 						{die "Problems with scopes\n";}
-					$scope_flag = 0;
+					$scope_flag -= 1;
 					while ((my $el = pop(@stack)))
 					{
 						if ($el eq "(") {last;}
@@ -106,6 +106,7 @@ sub rpn {
 	{
         push(@rpn,$el);
     }
+	$i = 0;
 	return \@rpn;
 	1;
 }
