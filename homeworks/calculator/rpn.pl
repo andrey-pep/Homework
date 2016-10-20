@@ -9,6 +9,7 @@ use 5.010;
 use strict;
 use warnings;
 use diagnostics;
+use Data::Dumper;
 BEGIN{
 	if ($] < 5.018) {
 		package experimental;
