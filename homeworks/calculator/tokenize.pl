@@ -13,6 +13,8 @@ use 5.010;
 use strict;
 use warnings;
 use diagnostics;
+use Data::Dumper;
+
 my $i = 0;
 BEGIN{
 	if ($] < 5.018) {
@@ -31,8 +33,8 @@ sub tokenize
 	{
         die "Problems with input\n";
     }
+	my $enough_num = 0;
 	my @res = split m{((?<!e)[-+]|[*()/^]|\s+)}, $expr;
-
 while ($i <= $#res) 
 {
 	given($res[$i])
@@ -41,6 +43,7 @@ while ($i <= $#res)
 		{
 			$res[$i] = 0+$res[$i];
 			$res[$i] = "$res[$i]";
+			$enough_num += 1;
 		}
 		when ([''])
 		{
@@ -50,6 +53,8 @@ while ($i <= $#res)
     $i++;
     next;
 }
+if ($enough_num < 1) {die "Problems with input: no numbers\n";};
+
 $i=0;
 
 while ($i <= $#res) 
@@ -74,8 +79,8 @@ while ($i <= $#res)
 	}
 	$i++;
 }
+	$i = 0;
 	return \@res;
 	1;
 }
 1;
-
