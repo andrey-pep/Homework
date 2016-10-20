@@ -13,7 +13,6 @@ use 5.010;
 use strict;
 use warnings;
 use diagnostics;
-use Data::Dumper;
 
 my $i = 0;
 BEGIN{
