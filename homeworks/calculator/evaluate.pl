@@ -20,8 +20,8 @@ no warnings 'experimental';
 sub evaluate {
 	my $rpn = shift;
 	my $i = 0;
-	my @calc_stack = ();
-while (my $c=@$rpn[$i])
+	my @calc_stack = ();			#стек для чисел
+while (my $c=@$rpn[$i])		#тут для каждой операции вытаскиваем по два элемента и выполняем операции соответственно
 {
 	if ($c =~ /\d/) {push(@calc_stack,$c);}
 	if ($c eq '+')
@@ -30,7 +30,7 @@ while (my $c=@$rpn[$i])
 		my $second_op = pop(@calc_stack);
 		push(@calc_stack, $first_op + $second_op);
 	}
-	if ($c eq "U+")
+	if ($c eq "U+")									#для унарных операций вытаскивается только один символ
 	{
 		my $first_op = pop(@calc_stack);
 		push(@calc_stack, abs($first_op));
@@ -66,8 +66,8 @@ while (my $c=@$rpn[$i])
 	}
 	$i++;
 }
-	$i = 0;
-	return $calc_stack[0];
+	$i = 0;			#обнуление счётчика для дальнейших проходов через функцию
+	return $calc_stack[0];		#возвращаем первое и единственное число стека чисел с результатом вычислений
 }
 
 1;
