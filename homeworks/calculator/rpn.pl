@@ -19,7 +19,7 @@ no warnings 'experimental';
 use FindBin;
 require "$FindBin::Bin/../lib/tokenize.pl";
 
-sub op_priorit
+sub op_priorit				#функция для расстановки приоритетов операций
 {
 	my $oper;
 	($oper) = @_;
@@ -32,7 +32,7 @@ sub op_priorit
 	1;
 }
 
-sub op_assotiation
+sub op_assotiation			#функция для расстановки ассоциативности операций
 {
 	my $op;
 	($op) = @_;
@@ -46,54 +46,54 @@ sub op_assotiation
 sub rpn {
 	my $expr = shift;
 	my $source = tokenize($expr);
-	my @stack;
+	my @stack;		#стэк операций
 	my @rpn;
 	my $i=0;
-	my $scope_flag = 0;
+	my $scope_flag = 0;		#флаг количества скобок
 	while (my $c=@$source[$i])
 	{
-        if($c =~ /\d/) {push(@rpn,$c);}
+        if($c =~ /\d/) {push(@rpn,$c);}		#числа на выход
 		else
 		{
-			if (op_assotiation($c) == 1)
+			if (op_assotiation($c) == 1)		#если правоассоциативные
 			{
-                if (op_priorit($c) < op_priorit($stack[0]))
+                if (op_priorit($c) < op_priorit($stack[0]))		#если приоритет ниже приоритета нижнего числа в стеке
 				{
-                    while (my $el = pop(@stack))
+                    while (my $el = pop(@stack))		#переносим всё из стека на выход
 					{
-						if ($el eq "(") {last;}
+						if ($el eq "(") {last;}		#до скобки или конца стека
                         push(@rpn,$el);
                     }
 				}
-				push(@stack,$c);
+				push(@stack,$c);		#саму операцию в стек
             }
-			if (op_assotiation($c) == 0)
+			if (op_assotiation($c) == 0)		#если левоассоциативная операция или первая (undef)
 			{
-                if (op_priorit($c) <= op_priorit($stack[$#stack]))
+                if (op_priorit($c) <= op_priorit($stack[$#stack]))	#если приоритет операции меньше или равен приоритету операции на вершине стека
 				{
-                    while (my $el = pop(@stack))
+                    while (my $el = pop(@stack)) 	#переносим всё из стека на выход
 					{
-						if ($el eq "(") {last;}
+						if ($el eq "(") {last;} 	#до скобки или конца стека
                         push(@rpn,$el);
                     }
 				}
 				push(@stack,$c);
 			}
-			if (op_assotiation($c) == 2)
+			if (op_assotiation($c) == 2)		#если скобка
 			{
-                 if ($c eq "(")
+                 if ($c eq "(")		#при открывающейся закидываем её в стек и увеличиваем переменную скобок
 				{
 					push(@stack,$c);
 					$scope_flag += 1;
 				}
-				else
+				else		#когда закрывающаяся
 				{
 					if ($scope_flag == 0)
-						{die "Problems with scopes\n";}
-					$scope_flag -= 1;
-					while ((my $el = pop(@stack)))
+						{die "Problems with scopes\n";}		#если не было открывающихся, то выводим ошибку и выход из программы
+					$scope_flag -= 1;						#уменьшаем значение в переменной скобок
+					while ((my $el = pop(@stack)))		#переносим всё из стека на выход
 					{
-						if ($el eq "(") {last;}
+						if ($el eq "(") {last;}			#до скобки или конца стека
 						else {push(@rpn,$el);}
 					}
 				}
@@ -102,11 +102,11 @@ sub rpn {
 		}
 		$i++;
 	}
-	while (my $el = pop(@stack))
+	while (my $el = pop(@stack))		#остаток стека операций на выход
 	{
         push(@rpn,$el);
     }
-	$i = 0;
+	$i = 0;		#обнуление счётчика для дальнейших проходов через функцию
 	return \@rpn;
 	1;
 }
