@@ -9,7 +9,6 @@ use 5.010;
 use strict;
 use warnings;
 use diagnostics;
-use Data::Dumper;
 BEGIN{
 	if ($] < 5.018) {
 		package experimental;
@@ -58,7 +57,7 @@ sub rpn {
 		{
 			if (op_assotiation($c) == 1)
 			{
-                if (op_priorit($c) < op_priorit($stack[$#stack]))
+                if (op_priorit($c) < op_priorit($stack[0]))
 				{
                     while (my $el = pop(@stack))
 					{
