@@ -30,15 +30,15 @@ while (my $c=@$rpn[$i])
 		my $second_op = pop(@calc_stack);
 		push(@calc_stack, $first_op + $second_op);
 	}
-	if ($c eq "U-")
-	{
-		my $first_op = pop(@calc_stack);
-		push(@calc_stack, $first_op * (-1));
-	}
 	if ($c eq "U+")
 	{
 		my $first_op = pop(@calc_stack);
 		push(@calc_stack, abs($first_op));
+	}
+	if ($c eq "U-")
+	{
+		my $first_op = pop(@calc_stack);
+		push(@calc_stack, $first_op * (-1));
 	}
 	if ($c eq '-')
 	{
