@@ -50,7 +50,7 @@ sub rpn {
 	my @rpn;
 	my $i=0;
 	my $scope_flag = 0;		#флаг количества скобок
-	while (my $c=@$source[$i])
+	while ( defined (my $c=@$source[$i]))
 	{
         if($c =~ /\d/) {push(@rpn,$c);}		#числа на выход
 		else
