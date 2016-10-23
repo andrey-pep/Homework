@@ -15,7 +15,8 @@ sub parse_json {
 	my $i = 0;
 	my $j = 0;
 	my @n_parts = ();
-	my @parts =split (/(".*": \[.*\],)|(".*": \{.*\},)|(".*" :\(*\),)|(".*": "\w+")| (".*": -?\d+\.?\d*)/, $source);
+	my @parts =split (/(".*": \[.*\],)|(".*": \{.*\},)|(".*" :\(*\))|(".*": "(.*)")| (".*": -?\d+\.?\d*)/, $source);
+	#p @parts;
 	while ($i<$#parts)
 	{
 		if (defined $parts[$i])
@@ -47,14 +48,17 @@ sub parse_json {
 		}
 		if($string =~ s{^"([^\{\[\(]+)": \["?(.*?)"?\]}{$st = $1; $pack = $2;}gse)
 		{
+			print $pack,"\n";
 			my @t = split (/,/,$pack);
 			$hash{$st} = (\@t);
 		}
 		if ($string =~ s{^"([^\{\[\(]+)": \{(.*)\}}{$st = $1; $pack = $2;}ge)
 		{
-            my %t;
-			$pack =~ s{"([^\{\[\(]+)": "(.*)"}{$t{$1} = $2;}e,$pack;
-			$hash{$st} = {%t};
+			
+            #my %t;
+			#$pack =~ s{"([^\{\[\(]+)": "(.*)"}{$t{$1} = $2;}e,$pack;
+			print "{$2}\n";
+			$hash{$st} = parse_json("$2");
         }
 		$i++;
 	}
