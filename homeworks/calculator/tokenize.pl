@@ -34,6 +34,7 @@ sub tokenize
 	$expr =~ tr/ //sd;			#убираем пробелы
 	my $enough_num = 0;		#счётчик количества цифр, если их не будет, то закроем программу с ошибкой
 	my @res = split m{((?<!e)[-+]|[*()/^]|\s+)}, $expr;		#делим входную строку на токены, которые потом ещё обработаем
+$i = 0;
 while ($i <= $#res) 
 {	 
 	given($res[$i])
@@ -52,7 +53,7 @@ while ($i <= $#res)
     $i++;
     next;
 }
-if ($enough_num < 1) {die "Problems with input: no numbers\n";};		#выход, если нет чисел
+if ($enough_num < 1) {die "Problems with input: no numbers";};		#выход, если нет чисел
 $i=0;
 
 while ($i <= $#res) 		#вторая проверка унарных символов
@@ -62,9 +63,10 @@ while ($i <= $#res) 		#вторая проверка унарных символ
 	{
 		when(['-', '+', '^'])
 		{
+			if ((!(defined $next_ch) || $next_ch eq ')')) { die "Problems with operators"; };
 			if ($next_ch eq '*' || $next_ch eq '/')
 			{
-                die "Used binary operator after unary\n";		#бинарные не идут после унарных
+                die "Used binary operator after unary";		#бинарные не идут после унарных
             }
 			if ($res[$i] eq '+' || $res[$i] eq '-')
 			{
@@ -73,6 +75,9 @@ while ($i <= $#res) 		#вторая проверка унарных символ
 							$res[$i] = "U".$res[$i];
 					}
 			}
+		}
+		when(['/','*']) {
+			if ((!(defined $next_ch) || $next_ch eq ')')) { die "Problems with operators"; };
 		}
 	}
 	$i++;
