@@ -22,7 +22,7 @@ for ($source) {
 		elsif (/\G[,\t\n]*?"([^\{\[\(\]\}\)]+?)":\s?"([\w\\\s]*?)"[,\t\n\s]*/gc) {
 			my $str = $2;
 			my $key = $1;
-			$str =~ s/\\u(.{4})/chr($1)/ge;
+			$str =~ s/\\u(.{3,4})/my $num = hex($1); chr($num)/ge;
 			$hash{$key} = $str;
 		}
 		elsif (/\G[,\t\n]*?"([^\{\[\(\]\}\)]+?)":\s?(-?\d+?[\.eE]?\d*[-+]*\d*)[,\t\n\s]*/gc) {
