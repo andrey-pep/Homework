@@ -8,6 +8,7 @@ our @EXPORT_OK = qw( parse_json );
 our @EXPORT = qw( parse_json );
 use DDP;
 use feature 'say';
+use utf8;
 
 sub parse_json {
 	my $source = shift;
@@ -16,24 +17,20 @@ my $kek;
 my $now_key;
 #return JSON::XS->new->utf8->decode($source);
 for ($source) {
-	while (pos()+1 < length()) {
-		if    (/\G[,\t\n]*?\G"([^\{\[\(\]\}\)]+?)": (\{.+?\})[,\t\n\s]+/gc) {				#разобраться с положением ифов, до этого это стояло в конце
+	while (pos() < length()) {
+		if    (/\G[,\t\n]*?\G"([^\{\[\(\]\}\)]+?)":\s?(\{.+\})+[\,\t\n\s]+(?=\")/gc) {				#разобраться с положением ифов, до этого это стояло в конце
 			$hash{$1} = parse_json($2);
 			say "that: $1 and $2";
         }
-		elsif (/\G[,\t\n]*?"([^\{\[\(\]\}\)]+?)": "(.+?)"[,\t\n\s]*/gc) {
-			my $key = $1;
-			my $string = $2;
-			#chop $string;
-			#chop $string;
-			$hash{$key} = $string;
+		elsif (/\G[,\t\n]*?"([^\{\[\(\]\}\)]+?)":\s?"(.*?)"[,\t\n\s]*/gcs) {
+			$hash{$1} = $2;
 			say "that: $1 and $2";
 		}
-		elsif (/\G[,\t\n]*?"([^\{\[\(\]\}\)]+?)": (-?\d+?[\.]?\d*)[,\t\n\s]*/gc) {
+		elsif (/\G[,\t\n]*?"([^\{\[\(\]\}\)]+?)":\s?(-?\d+?[\.]?\d*)[,\t\n\s]*/gc) {
 			$hash{$1} = 0+$2;
 			say "that: $1 and $2";
 		}
-		elsif (/\G[,\t\n]*?"([^\{\[\(\]\}\)]+)?": \[(.+?)\][,\t\n\s]*/gcs) {
+		elsif (/\G[,\t\n]*?"([^\{\[\(\]\}\)]+)?":\s?\[(.+?)\][,\t\n\s]*/gcs) {
 			my @t = split (/,[\s]?/,$2);
 			my $i = 0;
 			for my $item (@t) {
@@ -47,8 +44,3 @@ for ($source) {
 	else { pos()++; };
 	}
 }
-say pos($source);
-	say length($source);
-	return {%hash};
-}
-1;
