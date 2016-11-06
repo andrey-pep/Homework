@@ -23,6 +23,8 @@ for ($source) {
 			my $str = $2;
 			my $key = $1;
 			$str =~ s/\\u(.{3,4})/my $num = hex($1); chr($num)/ge;
+			$str =~ s/(\\n)/chr(10)/ge;
+			$str =~ s/(\\t)/chr(9)/ge;
 			$hash{$key} = $str;
 		}
 		elsif (/\G[,\t\n]*?"([^\{\[\(\]\}\)]+?)":\s?(-?\d+?[\.eE]?\d*[-+]*\d*)[,\t\n\s]*/gc) {
