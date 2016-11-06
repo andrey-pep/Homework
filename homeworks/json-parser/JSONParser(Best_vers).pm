@@ -31,7 +31,7 @@ for ($source) {
 			$hash{$1} = 0+$2;
 		}
 		elsif (/\G[,\t\n]*?"([^\{\[\(\]\}\)]+)?":\s?\[(.+?)\][,\t\n\s]*/gcs) {
-			my @t = split (/,[\s]?/,$2);
+			my @t = split (/(?<!\\"),[\s]*/g,$2);
 			my $i = 0;
 			for my $item (@t) {
 				if (/\D+/) {
