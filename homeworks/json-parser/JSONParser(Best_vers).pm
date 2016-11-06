@@ -13,22 +13,20 @@ use utf8;
 sub parse_json {
 	my $source = shift;
 my %hash;
-my $kek;
-my $now_key;
 #return JSON::XS->new->utf8->decode($source);
 for ($source) {
 	while (pos() < length()) {
 		if    (/\G[,\t\n]*?\G"([^\{\[\(\]\}\)]+?)":\s?(\{.+\})+[\,\t\n\s]+(?=\")/gc) {				#разобраться с положением ифов, до этого это стояло в конце
 			$hash{$1} = parse_json($2);
-			say "that: $1 and $2";
         }
-		elsif (/\G[,\t\n]*?"([^\{\[\(\]\}\)]+?)":\s?"(.*?)"[,\t\n\s]*/gcs) {
-			$hash{$1} = $2;
-			say "that: $1 and $2";
+		elsif (/\G[,\t\n]*?"([^\{\[\(\]\}\)]+?)":\s?"([\w\\\s]*?)"[,\t\n\s]*/gc) {
+			my $str = $2;
+			my $key = $1;
+			$str =~ s/\\u(.{4})/chr($1)/ge;
+			$hash{$key} = $str;
 		}
-		elsif (/\G[,\t\n]*?"([^\{\[\(\]\}\)]+?)":\s?(-?\d+?[\.]?\d*)[,\t\n\s]*/gc) {
+		elsif (/\G[,\t\n]*?"([^\{\[\(\]\}\)]+?)":\s?(-?\d+?[\.eE]?\d*[-+]*\d*)[,\t\n\s]*/gc) {
 			$hash{$1} = 0+$2;
-			say "that: $1 and $2";
 		}
 		elsif (/\G[,\t\n]*?"([^\{\[\(\]\}\)]+)?":\s?\[(.+?)\][,\t\n\s]*/gcs) {
 			my @t = split (/,[\s]?/,$2);
@@ -39,8 +37,10 @@ for ($source) {
 				}
 			}
 			$hash{$1} = (\@t);
-			say "that: $1 and $2";
 		}
 	else { pos()++; };
 	}
 }
+	return {%hash};
+}
+1;
