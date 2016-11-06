@@ -25,18 +25,19 @@ for ($source) {
 			$str =~ s/\\u(.{3,4})/my $num = hex($1); chr($num)/ge;
 			$str =~ s/(\\n)/chr(10)/ge;
 			$str =~ s/(\\t)/chr(9)/ge;
+			$str =~ s/(\\")/chr(34)/ge;
 			$hash{$key} = $str;
 		}
 		elsif (/\G[,\t\n]*?"([^\{\[\(\]\}\)]+?)":\s?(-?\d+?[\.eE]?\d*[-+]*\d*)[,\t\n\s]*/gc) {
 			$hash{$1} = 0+$2;
 		}
 		elsif (/\G[,\t\n]*?"([^\{\[\(\]\}\)]+)?":\s?\[(.+?)\][,\t\n\s]*/gcs) {
-			my @t = split (/(?<!\\"),[\s]*/g,$2);
+			my @t = split (/(?<!\\"),[\s]*/g,$2);		#my @t = split (/(?<!\\[\"]),[\s]*/g,$2);   ой ли
 			my $i = 0;
-			for my $item (@t) {
-				if (/\D+/) {
-				$t[$i++] =~ s/\"//gc;
-				}
+			for my $item (@t) {				#$item =~ s/\\u(.{3,4})/my $num = hex($1); chr($num)/ge;
+				if (/\D+/) {				#$item =~ s/(\\n)/chr(10)/ge;
+				$t[$i++] =~ s/\"//gc;			#$item =~ s/(\\t)/chr(9)/ge;
+				}					#$item =~ s/(\\")/chr(34)/ge;
 			}
 			$hash{$1} = (\@t);
 		}
