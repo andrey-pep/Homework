@@ -11,7 +11,7 @@ my %hash;
 for ($source) {
 	while (pos() < length()) {
 		my $key;
-		if (/\G[,\s]*"([^\{\[\(\]\}\)]+?)":\s?/gsc) {				#разобраться с положением ифов, до этого это стояло в конце
+		if (/\G[,\s]*"([^\{\[\(\]\}\)]+?)":\s?/gsc) {
 			$key = $1;
         }
 		if (/\G\s*\"([^"\\]*)\s*/gc) {
@@ -71,9 +71,11 @@ for ($source) {
 			    }
 			}
 			chop $str;
-			if ($str =~ /\s?\{.*|\s?\[.*/s) { $t[$i++] = parse_json($str);}
+			p @t;
+			if ($str =~ /^[\{\[]/m) { $t[$i++] = parse_json($str);}
 			else {
-			@t = split (/(?<!\\["])(?<!["]),\s?/gs,$str);
+			@t = split (/(?<!\\["])(?<=["\d]),(?= ?[\"\d\}\]])\s?/s,$str);
+			p @t;
 			for(@t) {
 				$t[$i]= parse_json($t[$i]);
 				$i++;
