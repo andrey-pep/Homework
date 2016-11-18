@@ -73,7 +73,7 @@ for ($source) {
 			chop $str;
 			if ($str =~ /\s?\{.*|\s?\[.*/s) { $t[$i++] = parse_json($str);}
 			else {
-			@t = split (/(?<!\\["])(?<![^"]),\s?/s,$str);
+			@t = split (/(?<!\\["])(?<!["]),\s?/gs,$str);
 			for(@t) {
 				$t[$i]= parse_json($t[$i]);
 				$i++;
