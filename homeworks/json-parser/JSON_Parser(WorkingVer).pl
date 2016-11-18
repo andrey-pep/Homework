@@ -1,26 +1,17 @@
 package Local::JSONParser;
-use JSON::XS;
-
 use strict;
 use warnings;
 use base qw(Exporter);
 our @EXPORT_OK = qw( parse_json );
 our @EXPORT = qw( parse_json );
-use DDP;
-use feature 'say';
-use Encode qw(encode decode);
-use charnames ':full';
 
 sub parse_json {
 	my $source = shift;
-	my $scope_amount1 = 0;
-	my $scope_amount2 = 0;
 my %hash;
-#return JSON::XS->new->utf8->decode($source);
 for ($source) {
 	while (pos() < length()) {
 		my $key;
-		if (/\G[,\s]*"([^\{\[\(\]\}\)]+?)":\s?/gsc) {
+		if (/\G[,\s]*"([^\{\[\(\]\}\)]+?)":\s?/gsc) {				#разобраться с положением ифов, до этого это стояло в конце
 			$key = $1;
         }
 		if (/\G\s*\"([^"\\]*)\s*/gc) {
@@ -69,8 +60,8 @@ for ($source) {
 		}
 		elsif (/\G[\,\s\:]*[\[]\s*/gc) {
 			my $str = "";
-			$scope_amount1 = 1;
-			$scope_amount2 = 0;
+			my $scope_amount1 = 1;
+			my $scope_amount2 = 0;
 			my @t;
 			my $i = 0;
 			while ($scope_amount1 > $scope_amount2) {
@@ -82,7 +73,7 @@ for ($source) {
 			chop $str;
 			if ($str =~ /\s?\{.*|\s?\[.*/s) { $t[$i++] = parse_json($str);}
 			else {
-			@t = split (/(?<!\\["])(?<![^"]),\s?/gs,$str);
+			@t = split (/(?<!\\["])(?<![^"]),\s?/s,$str);
 			for(@t) {
 				$t[$i]= parse_json($t[$i]);
 				$i++;
@@ -95,8 +86,8 @@ for ($source) {
         }
 		elsif (/\G[\,\s]*[\{]\s*/gc) {
 			my $str = "";
-			$scope_amount1 = 1;
-			$scope_amount2 = 0;
+			my $scope_amount1 = 1;
+			my $scope_amount2 = 0;
 			while ($scope_amount1 > $scope_amount2) {
             if (/\G(.*?)\s?(\{|\})\s?/gcs) {
 				if ($2 eq '{') {$scope_amount1++; $str = $str.$1.$2;}
