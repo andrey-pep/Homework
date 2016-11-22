@@ -1,4 +1,5 @@
 package Local::JSONParser;
+use JSON::XS;
 use strict;
 use warnings;
 use base qw(Exporter);
@@ -6,12 +7,12 @@ our @EXPORT_OK = qw( parse_json );
 our @EXPORT = qw( parse_json );
 
 sub parse_json {
-	my $source = shift;
+my $source = shift;
 my %hash;
 for ($source) {
 	while (pos() < length()) {
 		my $key;
-		if (/\G[,\s]*"([^\{\[\(\]\}\)]+?)":\s?/gsc) {
+		if (/\G[,\s]*"([^\{\[\(\]\}\)]+?)":\s?/gsc) {				#разобраться с положением ифов, до этого это стояло в конце
 			$key = $1;
         }
 		if (/\G\s*\"([^"\\]*)\s*/gc) {
@@ -71,11 +72,9 @@ for ($source) {
 			    }
 			}
 			chop $str;
-			p @t;
 			if ($str =~ /^[\{\[]/m) { $t[$i++] = parse_json($str);}
 			else {
 			@t = split (/(?<!\\["])(?<=["\d]),(?= ?[\"\d\}\]])\s?/s,$str);
-			p @t;
 			for(@t) {
 				$t[$i]= parse_json($t[$i]);
 				$i++;
