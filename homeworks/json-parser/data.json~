@@ -1,0 +1,10 @@
+{
+  "key1": "string value []  \"  \n\t   \u0451 \u0542 \u0541 \u0541 \u0544 \u0541",
+"key2": -3.1415,
+
+"key5": [1, 2, 3],
+"keykey": "sas",
+"anykey": { "kone": { "tone": "saso"}, "ktwo": { "ttwo": 1} },
+"key4": { "nested": "object", "nested2": "object2" },
+"key7": "another string"
+}
