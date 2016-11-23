@@ -12,6 +12,12 @@ use feature 'switch';
 
 our $VERSION = '1.00';
 
+for my $item (@ARGV) {
+    given ($item) {
+        when("--band") {say "lol";}
+    }
+}
+shift @ARGV;
 my @music;
 my $i = 0;
 my @coloms = ("band","year","album","treck","form");
@@ -22,11 +28,6 @@ while (<>) {
     }
 }
 
-for my $item (@ARGV) {
-    given ($item) {
-        when("--band") {say "lol";}
-    }
-}
 my @data = table_out(@coloms,@music);
 #p @music;
 #p @data;
