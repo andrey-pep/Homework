@@ -52,9 +52,21 @@ sub table_out {
             printf ("| %${len}s ", $music[$i]{$item});
             
         }
+        print "|\n|";
+        for my $item (@coloms) {
+            my $len = int($len_hash{$item});
+            for (my $j = 0; $j < $len; $j++) {
+                printf ("-", $music[$i]{$item});
+            }
+            print "+";
+        }
+        printf ("\b|\n");
         $i++;
-        say "|";
     }
+    print "\\";
+    for ($i = 0; $i<$string_len - 2; $i++) { print "-"; }
+    print "/";
+    say "";
     return @music if wantarray;
     1;
 }
