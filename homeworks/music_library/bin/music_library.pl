@@ -11,20 +11,25 @@ use DDP;
 use feature 'switch';
 
 our $VERSION = '1.00';
-
-for my $item (@ARGV) {
-    given ($item) {
-        when("--band") {say "lol";}
-    }
-}
-shift @ARGV;
-my @music;
 my $i = 0;
-my @coloms = ("band","year","album","treck","form");
 
+my @arguments;
+for (@ARGV) {
+    $arguments[$i++] = shift @ARGV;
+}
+
+my @music;
+my @coloms = ("band","year","album","treck","form");
+$i = 0;
 while (<>) {
     if (/\.\/.+\/\d{4} - .+\/.+\.[\w]+\s?/) {
         $music[$i++] = add_treck($_)
+    }
+}
+
+for my $item (@arguments) {
+    given ($item) {
+        when("--band") {say "lol";}
     }
 }
 
