@@ -8,6 +8,7 @@ use base qw(Exporter);
 our @EXPORT_OK = qw( table_out );
 our @EXPORT = qw( table_out );
 use DDP;
+use feature 'say';
 
 =encoding utf8
 
@@ -34,11 +35,9 @@ sub table_out {
     while ( ref ( $coloms[$i] = shift ) ne "HASH" ) { $i++; }       #считываем данные о столбцах
     unshift(@_,pop (@coloms));
     my @music = @_;                                                 #и считываем массив с треками
-    
     for my $item (@coloms) {
-        $len_hash{$item} = max_len(@music);
+        $len_hash{$item} = max_len($item,@music);
     }
-    
     p @coloms;
     return @music if wantarray;
     1;
