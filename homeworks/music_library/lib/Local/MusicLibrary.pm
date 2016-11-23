@@ -40,14 +40,15 @@ sub table_out {
         $len_hash{$item} = max_len($item,@music);
         $string_len+= $len_hash{$item};
     }
+    $string_len += @coloms + 1;
     print "/";
-    for ($i = 0; $i<$string_len-2; $i++) { print "-"; }
+    for ($i = 0; $i<$string_len - 2; $i++) { print "-"; }
     print "\\";
     say "";
     $i = 0;
     for (@music) {
         for my $item (@coloms) {
-            my $len = int($len_hash{$item});
+            my $len = int($len_hash{$item}) - 2;
             printf ("| %${len}s ", $music[$i]{$item});
             
         }
