@@ -52,7 +52,9 @@ sub table_out {
             printf ("| %${len}s ", $music[$i]{$item});
             
         }
-        print "|\n|";
+        print "|\n";
+        last if $i == @music - 1;
+        print "|";
         for my $item (@coloms) {
             my $len = int($len_hash{$item});
             for (my $j = 0; $j < $len; $j++) {
