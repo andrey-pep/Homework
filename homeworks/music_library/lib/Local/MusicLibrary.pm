@@ -6,6 +6,7 @@ use diagnostics;
 use base qw(Exporter);
 our @EXPORT_OK = qw( table_out );
 our @EXPORT = qw( table_out );
+use DDP;
 
 =encoding utf8
 
@@ -26,8 +27,12 @@ our $VERSION = '1.00';
 =cut
 
 sub table_out {
-    print "shit";
+    my @coloms;
+    my $i = 0;
+    while ( ref ( $coloms[$i] = shift ) ne "HASH" ) { $i++; }
+    unshift(@_,pop (@coloms));
     my @music = @_;
+    p @coloms;
     return @music if wantarray;
     1;
 }

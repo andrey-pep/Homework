@@ -18,7 +18,8 @@ while (<>) {
     $music[$i++] = add_treck($_);
 }
 
-my @data = table_out(@music);
+my @data = table_out("band","album",@music);
 
+p @data;
 say $music[19]{"band"};
 1;
