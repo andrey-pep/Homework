@@ -40,11 +40,20 @@ sub table_out {
         $len_hash{$item} = max_len($item,@music);
         $string_len+= $len_hash{$item};
     }
-    printf ("/%${string_len}s\n", "\\");
-    #print "/";
-    #for ($i = 0; $i<$string_len-2; $i++) { print "-"; }
-    #print "\\";
-   # say "";
+    print "/";
+    for ($i = 0; $i<$string_len-2; $i++) { print "-"; }
+    print "\\";
+    say "";
+    $i = 0;
+    for (@music) {
+        for my $item (@coloms) {
+            my $len = int($len_hash{$item});
+            printf ("| %${len}s ", $music[$i]{$item});
+            
+        }
+        $i++;
+        say "|";
+    }
     return @music if wantarray;
     1;
 }
