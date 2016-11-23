@@ -32,13 +32,19 @@ sub table_out {
     my @coloms;
     my %len_hash;
     my $i = 0;
+    my $string_len = 0;
     while ( ref ( $coloms[$i] = shift ) ne "HASH" ) { $i++; }       #считываем данные о столбцах
     unshift(@_,pop (@coloms));
     my @music = @_;                                                 #и считываем массив с треками
     for my $item (@coloms) {
         $len_hash{$item} = max_len($item,@music);
+        $string_len+= $len_hash{$item};
     }
-    p @coloms;
+    printf ("/%${string_len}s\n", "\\");
+    #print "/";
+    #for ($i = 0; $i<$string_len-2; $i++) { print "-"; }
+    #print "\\";
+   # say "";
     return @music if wantarray;
     1;
 }
