@@ -9,17 +9,27 @@ use Local::Parse;
 use Local::MusicLibrary;
 use DDP;
 use feature 'switch';
+no warnings 'experimental';
 
 our $VERSION = '1.00';
 my $i = 0;
 
 my @arguments;
-for (@ARGV) {
+while (@ARGV) {
     $arguments[$i++] = shift @ARGV;
 }
 
+my %keys = make_arg_hash (@arguments);
+
 my @music;
-my @coloms = ("band","year","album","treck","form");
+my @coloms;
+if (defined $keys{colums}) {
+    @coloms = $keys{colums};
+}
+else { @coloms = ("band","year","album","treck","form"); }
+
+p @coloms;
+
 $i = 0;
 while (<>) {
     if (/\.\/.+\/\d{4} - .+\/.+\.[\w]+\s?/) {
@@ -27,14 +37,12 @@ while (<>) {
     }
 }
 
-for my $item (@arguments) {
-    given ($item) {
-        when("--band") {say "lol";}
+
+for ($i = 0; $i < @arguments; $i++) {
+    given ($arguments[$i]) {
+        when("--colums") {  }
     }
 }
 
-my @data = table_out(@coloms,@music);
-#p @music;
-#p @data;
-#say $music[19]{"band"};
+table_out(@coloms,@music);
 1;
