@@ -22,7 +22,7 @@ Version 1.1
 
 =cut
 
-our $VERSION = '1.1';
+our $VERSION = '1.2';
 
 =head1 SYNOPSIS
 

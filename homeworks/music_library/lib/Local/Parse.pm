@@ -8,6 +8,8 @@ our @EXPORT = qw( add_treck make_arg_hash);
 use DDP;
 use feature 'say';
 
+our $VERSION = '1.2';
+
 sub add_treck {
     my $source = shift;
     if (/\.\/(.+)\/(\d{4}) - (.+)\/(.+)\.([\w]+)\s?/g) {

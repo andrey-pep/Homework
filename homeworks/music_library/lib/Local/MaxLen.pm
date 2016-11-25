@@ -6,6 +6,8 @@ use base qw(Exporter);
 our @EXPORT_OK = qw( max_len );
 our @EXPORT = qw( max_len );
 
+our $VERSION = '1.2';
+
 sub max_len {
     my $part = shift @_;
     my @music = @_;
