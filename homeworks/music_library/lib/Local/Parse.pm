@@ -25,7 +25,6 @@ sub make_arg_hash {
             print "$work_mas[$i]\n";
             my @col = split (/[,]/,$work_mas[$i]);
             $out{colums} = \@col;
-            p %out;
         }
         
     }

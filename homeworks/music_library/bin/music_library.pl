@@ -24,11 +24,11 @@ my %keys = make_arg_hash (@arguments);
 my @music;
 my @coloms;
 if (defined $keys{colums}) {
-    @coloms = $keys{colums};
+    for ($i = 0; defined $keys{colums}[$i]; $i++) {
+        $coloms[$i] = $keys{colums}[$i];
+    }
 }
 else { @coloms = ("band","year","album","treck","form"); }
-
-p @coloms;
 
 $i = 0;
 while (<>) {

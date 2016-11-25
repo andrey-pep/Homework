@@ -58,7 +58,7 @@ sub table_out {
         for my $item (@coloms) {
             my $len = int($len_hash{$item});
             for (my $j = 0; $j < $len; $j++) {
-                printf ("-", $music[$i]{$item});
+                printf ("-");
             }
             print "+";
         }

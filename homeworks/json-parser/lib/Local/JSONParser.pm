@@ -1,13 +1,14 @@
 package Local::JSONParser;
 use JSON::XS;
 use strict;
-use warnings;
+
 use base qw(Exporter);
 our @EXPORT_OK = qw( parse_json );
 our @EXPORT = qw( parse_json );
 
 sub parse_json {
 my $source = shift;
+#return JSON::XS->new->utf8->decode($source);
 my %hash;
 for ($source) {
 	while (pos() < length()) {
