@@ -27,10 +27,7 @@ sub make_arg_hash {
             $out{colums} = \@col;
         }
         elsif ($item =~ /--([\w]{4,6})/) {
-            my $key = $1;
-            if ($work_mas[$i] =~ /\'(.+)\'/s) {die "problems with keys";}
-            say $1;
-            $out{$key} = $work_mas[$i];
+            $out{$1} = $work_mas[$i++];
         }
     }
     return %out;

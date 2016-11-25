@@ -11,7 +11,7 @@ use DDP;
 use feature 'switch';
 no warnings 'experimental';
 
-our $VERSION = '1.00';
+our $VERSION = '1.1';
 my $i = 0;
 
 my @arguments;
@@ -41,6 +41,7 @@ while (<>) {
 if (defined $keys{band}) {
     @music = reduce_mus($keys{band},"band",@music);
 }
+
 #p @music;
 table_out(@coloms,@music);
 1;

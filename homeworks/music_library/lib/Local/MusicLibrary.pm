@@ -18,11 +18,11 @@ Local::MusicLibrary - core music library module
 
 =head1 VERSION
 
-Version 1.00
+Version 1.1
 
 =cut
 
-our $VERSION = '1.00';
+our $VERSION = '1.1';
 
 =head1 SYNOPSIS
 
