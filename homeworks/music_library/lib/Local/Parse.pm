@@ -6,6 +6,7 @@ use base qw(Exporter);
 our @EXPORT_OK = qw( add_treck make_arg_hash);
 our @EXPORT = qw( add_treck make_arg_hash);
 use DDP;
+use feature 'say';
 
 sub add_treck {
     my $source = shift;
@@ -22,11 +23,15 @@ sub make_arg_hash {
     my @work_mas = @_;
     while (my $item = $work_mas[$i++]) {
         if ($item =~ /--colums/) {
-            print "$work_mas[$i]\n";
             my @col = split (/[,]/,$work_mas[$i]);
             $out{colums} = \@col;
         }
-        
+        elsif ($item =~ /--([\w]{4,6})/) {
+            my $key = $1;
+            if ($work_mas[$i] =~ /\'(.+)\'/s) {die "problems with keys";}
+            say $1;
+            $out{$key} = $work_mas[$i];
+        }
     }
     return %out;
     

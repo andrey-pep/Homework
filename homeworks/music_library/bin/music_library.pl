@@ -1,5 +1,4 @@
 #!/usr/bin/env perl
-use JSON::XS;
 use strict;
 use warnings;
 use feature 'say';
@@ -7,6 +6,7 @@ use FindBin;
 use lib "$FindBin::Bin/../lib";
 use Local::Parse;
 use Local::MusicLibrary;
+use Local::Reducer;
 use DDP;
 use feature 'switch';
 no warnings 'experimental';
@@ -22,6 +22,7 @@ while (@ARGV) {
 my %keys = make_arg_hash (@arguments);
 
 my @music;
+
 my @coloms;
 if (defined $keys{colums}) {
     for ($i = 0; defined $keys{colums}[$i]; $i++) {
@@ -37,12 +38,9 @@ while (<>) {
     }
 }
 
-
-for ($i = 0; $i < @arguments; $i++) {
-    given ($arguments[$i]) {
-        when("--colums") {  }
-    }
+if (defined $keys{band}) {
+    @music = reduce_mus($keys{band},"band",@music);
 }
-
+#p @music;
 table_out(@coloms,@music);
 1;
