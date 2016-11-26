@@ -5,8 +5,7 @@ use warnings;
 use base qw(Exporter);
 our @EXPORT_OK = qw( add_treck make_arg_hash);
 our @EXPORT = qw( add_treck make_arg_hash);
-use DDP;
-use feature 'say';+
+use utf8;
 
 our $VERSION = '1.2';
 

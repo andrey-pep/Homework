@@ -8,6 +8,7 @@ use base qw(Exporter);
 our @EXPORT_OK = qw( table_out );
 our @EXPORT = qw( table_out );
 use feature 'say';
+use utf8;
 
 =encoding utf8
 
@@ -60,11 +61,11 @@ sub table_out {
         for my $item (@columns) {
             my $len = int($len_hash{$item});
             for (my $j = 0; $j < $len; $j++) {
-                printf ("-");
+                print ("-");
             }
             print "+";
         }
-        printf ("\b|\n");
+        print ("\b|\n");
         $i++;
     }
     print "\\";

@@ -6,8 +6,6 @@ use diagnostics;
 use base qw(Exporter);
 our @EXPORT_OK = qw( reduce_mus sort_mus);
 our @EXPORT = qw( reduce_mus sort_mus);
-use DDP;
-use feature 'say';
 
 our $VERSION = '1.2';
 

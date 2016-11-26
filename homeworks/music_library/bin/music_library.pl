@@ -7,6 +7,7 @@ use Local::Parse;
 use Local::MusicLibrary;
 use Local::KeyWork;
 no warnings 'experimental';
+use utf8;
 
 our $VERSION = '1.1';
 my $i = 0;
