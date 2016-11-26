@@ -28,17 +28,20 @@ while (<>) {
 }
 
 my @columns;
+
 if (defined $keys{columns}) {
     for ($i = 0; defined $keys{columns}[$i]; $i++) {
         $columns[$i] = $keys{columns}[$i];
     }
 }
 else {@columns = ("band","year","album","treck","format"); }
+
 for my $item ("band","year","album","treck","format") {
     if (defined $keys{$item}) {
         @music = reduce_mus($keys{$item},$item,@music);
     }
 }
+
 if (defined $keys{sort}) {
     @music = sort_mus($keys{sort},@music);
 }
