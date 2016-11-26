@@ -1,4 +1,4 @@
-package Local::Reducer;
+package Local::KeyWork;
 
 use strict;
 use warnings;

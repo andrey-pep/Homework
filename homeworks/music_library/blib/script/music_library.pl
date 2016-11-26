@@ -5,7 +5,7 @@ use FindBin;
 use lib "$FindBin::Bin/../lib";
 use Local::Parse;
 use Local::MusicLibrary;
-use Local::Reducer;
+use Local::KeyWork;
 no warnings 'experimental';
 
 our $VERSION = '1.1';
