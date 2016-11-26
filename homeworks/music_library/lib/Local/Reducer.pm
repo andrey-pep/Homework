@@ -35,8 +35,9 @@ sub reduce_mus {
 sub sort_mus {
     my $category = shift;
     my @music = @_;
-    my $i = 0;
-    sub smart { $a->{$category} <=> $b->{$category} || $a->{$category} cmp $b->{$category}}
-    @music = sort smart @music;
+    if ($category eq "year") {
+        @music = sort { $a->{$category} <=> $b->{$category} } @music;
+    }
+    else { @music = sort {$a->{$category} cmp $b->{$category} } @music}
     return @music;
 }
