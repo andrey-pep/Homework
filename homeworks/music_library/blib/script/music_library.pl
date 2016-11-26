@@ -1,14 +1,11 @@
 #!/usr/bin/env perl
 use strict;
 use warnings;
-use feature 'say';
 use FindBin;
 use lib "$FindBin::Bin/../lib";
 use Local::Parse;
 use Local::MusicLibrary;
 use Local::Reducer;
-use DDP;
-use feature 'switch';
 no warnings 'experimental';
 
 our $VERSION = '1.1';
