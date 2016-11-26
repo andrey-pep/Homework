@@ -42,5 +42,9 @@ for my $item ("band","year","album","treck","format") {
         @music = reduce_mus($keys{$item},$item,@music);
     }
 }
+if (defined $keys{sort}) {
+    @music = sort_mus($keys{sort},@music);
+}
+
 table_out(@columns,@music);
 1;

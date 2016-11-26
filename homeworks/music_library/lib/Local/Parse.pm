@@ -28,7 +28,6 @@ sub make_arg_hash {
             if (!defined $work_mas[$i]) {
                 exit -1;
             }
-            
             my @col = split (/[,]/,$work_mas[$i]);   
             $out{columns} = \@col;
         }
