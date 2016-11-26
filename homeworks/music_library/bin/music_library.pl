@@ -30,17 +30,17 @@ while (<>) {
     }
 }
 
-my @coloms;
-if (defined $keys{colums}) {
-    for ($i = 0; defined $keys{colums}[$i]; $i++) {
-        $coloms[$i] = $keys{colums}[$i];
+my @columns;
+if (defined $keys{columns}) {
+    for ($i = 0; defined $keys{columns}[$i]; $i++) {
+        $columns[$i] = $keys{columns}[$i];
     }
 }
-else {@coloms = ("band","year","album","treck","format"); }
+else {@columns = ("band","year","album","treck","format"); }
 for my $item ("band","year","album","treck","format") {
     if (defined $keys{$item}) {
         @music = reduce_mus($keys{$item},$item,@music);
     }
 }
-table_out(@coloms,@music);
+table_out(@columns,@music);
 1;

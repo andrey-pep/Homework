@@ -29,28 +29,28 @@ our $VERSION = '1.2';
 =cut
 
 sub table_out {
-    my @coloms;
+    my @columns;
     my %len_hash;
     my $i = 0;
     my $string_len = 0;
-    while ( ref ( $coloms[$i] = shift ) ne "HASH" ) { $i++; }       #считываем данные о столбцах
-    unshift(@_,pop (@coloms));
-    if (@coloms == 0) {
+    while ( ref ( $columns[$i] = shift ) ne "HASH" ) { $i++; }       #считываем данные о столбцах
+    unshift(@_,pop (@columns));
+    if (@columns == 0) {
         exit;
     }
     my @music = @_;                                                 #и считываем массив с треками
-    for my $item (@coloms) {
+    for my $item (@columns) {
         $len_hash{$item} = max_len($item,@music);
         $string_len+= $len_hash{$item};
     }
-    $string_len += @coloms + 1;
+    $string_len += @columns + 1;
     print "/";
     for ($i = 0; $i<$string_len - 2; $i++) { print "-"; }
     print "\\";
     say "";
     $i = 0;
     for (@music) {       
-        for my $item (@coloms) {
+        for my $item (@columns) {
             my $len = int($len_hash{$item}) - 2;
             printf ("| %${len}s ", $music[$i]{$item});
             
@@ -58,7 +58,7 @@ sub table_out {
         print "|\n";
         last if $i == @music - 1;
         print "|";
-        for my $item (@coloms) {
+        for my $item (@columns) {
             my $len = int($len_hash{$item});
             for (my $j = 0; $j < $len; $j++) {
                 printf ("-");
