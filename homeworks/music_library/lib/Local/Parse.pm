@@ -11,12 +11,8 @@ use feature 'say';+
 our $VERSION = '1.2';
 
 sub add_treck {
-    my $source = shift;
-    if (/\.\/(.+)\/(\d+) - (.+)\/(.+)\.([\w]+)\s?/g) {
-        my %hash_out = (band => $1, year =>$2, album => $3, treck => $4, format => $5);
+        my %hash_out = (band => shift, year =>shift, album => shift, treck => shift, format => shift);
         return \%hash_out;
-    }
-    1;
 }
 
 sub make_arg_hash {
