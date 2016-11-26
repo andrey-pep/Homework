@@ -4,8 +4,8 @@ use strict;
 use warnings;
 use diagnostics;
 use base qw(Exporter);
-our @EXPORT_OK = qw( reduce_mus );
-our @EXPORT = qw( reduce_mus );
+our @EXPORT_OK = qw( reduce_mus sort_mus);
+our @EXPORT = qw( reduce_mus sort_mus);
 use DDP;
 use feature 'say';
 
@@ -29,5 +29,14 @@ sub reduce_mus {
         }
     }
     if (@music == 0) {die "No such compositions";}
+    return @music;
+}
+
+sub sort_mus {
+    my $category = shift;
+    my @music = @_;
+    my $i = 0;
+    sub smart { $a->{$category} <=> $b->{$category} || $a->{$category} cmp $b->{$category}}
+    @music = sort smart @music;
     return @music;
 }
