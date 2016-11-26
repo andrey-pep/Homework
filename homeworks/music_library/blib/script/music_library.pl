@@ -36,11 +36,12 @@ if (defined $keys{colums}) {
         $coloms[$i] = $keys{colums}[$i];
     }
 }
-else {@coloms = ("band","year","album","treck","format"); }
-for my $item ("band","year","album","treck","format") {
+else {@coloms = ("band","year","album","treck","form"); }
+for my $item ("band","year","album","treck","form") {
     if (defined $keys{$item}) {
         @music = reduce_mus($keys{$item},$item,@music);
     }
 }
+
 table_out(@coloms,@music);
 1;

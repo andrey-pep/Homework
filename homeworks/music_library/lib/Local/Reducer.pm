@@ -16,9 +16,17 @@ sub reduce_mus {
     my $category = shift;
     my @music = @_;
     my $i = 0;
-    while (defined $music[$i]) {
-        if ($music[$i]{$category} ne $the_chosen_one) {splice (@music,$i,1);}
-        else { $i++; }
+    if ($category eq "year") {
+        while (defined $music[$i]) {
+            if ($music[$i]{$category} != $the_chosen_one) {splice (@music,$i,1);}
+            else { $i++; }
+        }
+    }
+    else {
+        while (defined $music[$i]) {
+            if ($music[$i]{$category} ne $the_chosen_one) {splice (@music,$i,1);}
+            else { $i++; }
+        }
     }
     if (@music == 0) {die "No such compositions";}
     return @music;
