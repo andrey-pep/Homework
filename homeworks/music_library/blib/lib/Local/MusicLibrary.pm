@@ -41,35 +41,27 @@ sub table_out {
     my @music = @_;                                                 #и считываем массив с треками
     for my $item (@columns) {
         $len_hash{$item} = max_len($item,@music);
-        $string_len+= $len_hash{$item};
+        $string_len+= $len_hash{$item} + 2;
     }
+    my $separator = '|';
+    for my $item (@columns) {
+        $separator = $separator.sprintf("%s+", '-'x($len_hash{$item} + 2));
+    }
+    chop $separator;
+    $separator = $separator.'|';
     $string_len += @columns + 1;
-    print "/";
-    print '-' x ($string_len - 2);
-    print "\\";
-    say "";
+    printf ("/%s\\\n",'-'x($string_len - 2));
     $i = 0;
     for (@music) {       
         for my $item (@columns) {
-            my $len = int($len_hash{$item}) - 2;
-            printf ("| %${len}s ", $music[$i]{$item});
-            
+            printf ("| %$len_hash{$item}s ", $music[$i]{$item});
         }
         print "|\n";
         last if $i == @music - 1;
-        print '|';
-        for my $item (@columns) {
-            my $len = int($len_hash{$item});
-            print "-" x $len;
-            print "+";
-        }
-        print ("\b|\n");
+        say $separator;
         $i++;
     }
-    print '\\';
-    print '-' x ($string_len - 2);
-    print '/';
-    say "";
+    printf ("\\%s/\n",'-'x($string_len - 2));
     return @music if wantarray;
     1;
 }
