@@ -39,13 +39,13 @@ sub table_out {
         exit;
     }
     my @music = @_;                                                 #и считываем массив с треками
-    for my $item (@columns) {
-        $len_hash{$item} = max_len($item,@music);
-        $string_len+= $len_hash{$item} + 2;
-    }
     my $separator = '|';
     for my $item (@columns) {
-        $separator = $separator.sprintf("%s+", '-'x($len_hash{$item} + 2));
+        if (defined $item) {
+            $len_hash{$item} = max_len($item,@music);
+            $string_len+= $len_hash{$item} + 2;
+            $separator = $separator.sprintf("%s+", '-'x($len_hash{$item} + 2));
+        }
     }
     chop $separator;
     $separator = $separator.'|';

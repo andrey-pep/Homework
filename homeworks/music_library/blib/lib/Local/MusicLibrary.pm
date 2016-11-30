@@ -33,19 +33,20 @@ sub table_out {
     my %len_hash;
     my $i = 0;
     my $string_len = 0;
-    while ( ref ( $columns[$i] = shift ) ne "HASH" ) { $i++; }       #считываем данные о столбцах
-    unshift(@_,pop (@columns));
+    my $columns = shift;
+    #while ( ref ( $columns[$i] = shift ) ne "HASH" ) { $i++; }       #считываем данные о столбцах
+    #unshift(@_,pop (@columns));
     if (@columns == 0) {
         exit;
     }
-    my @music = @_;                                                 #и считываем массив с треками
-    for my $item (@columns) {
-        $len_hash{$item} = max_len($item,@music);
-        $string_len+= $len_hash{$item} + 2;
-    }
+    my $music = shift;                                                 #и считываем массив с треками
     my $separator = '|';
     for my $item (@columns) {
-        $separator = $separator.sprintf("%s+", '-'x($len_hash{$item} + 2));
+        if (defined $item) {
+            $len_hash{$item} = max_len($item,@music);
+            $string_len+= $len_hash{$item} + 2;
+            $separator = $separator.sprintf("%s+", '-'x($len_hash{$item} + 2));
+        }
     }
     chop $separator;
     $separator = $separator.'|';

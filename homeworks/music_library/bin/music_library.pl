@@ -32,7 +32,6 @@ while (<>) {
 my @columns;
 
 if (defined $keys{columns}) {
-    #@columns = $keys{columns};
     for ($i = 0; defined $keys{columns}[$i]; $i++) {
         $columns[$i] = $keys{columns}[$i];
     }
@@ -49,5 +48,5 @@ if (defined $keys{sort}) {
     @music = sort_mus($keys{sort},@music);
 }
 
-table_out(@columns,@music);
+table_out(\@columns,\@music);
 1;
