@@ -44,10 +44,9 @@ sub table_out {
         $string_len+= $len_hash{$item} + 2;
     }
     $string_len += @columns + 1;
-    print "/";
-    print '-' x ($string_len - 2);
-    print "\\";
-    say "";
+    my $separator = sprintf("lol %s+%d\n", '-'x($len_hash{band} + 2),3x5);
+    print $separator;
+    printf ("/%s\\\n",'-'x($string_len - 2));
     $i = 0;
     for (@music) {       
         for my $item (@columns) {
