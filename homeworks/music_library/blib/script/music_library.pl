@@ -9,6 +9,7 @@ use Local::KeyWork;
 no warnings 'experimental';
 use utf8;
 use feature 'say';
+use DDP;
 
 our $VERSION = '1.1';
 my $i = 0;
@@ -24,7 +25,7 @@ my @music;
 
 $i = 0;
 while (<>) {
-    if (/\.\/(\w+)\/(\d+) - (\w+)\/(\w+)\.(\w+)\s?/g) {
+    if (/\.\/(\w+)\/(\d+) - (\w+)\/(\w+)\.(\w+)\s?$/g) {
         $music[$i++] = add_treck($1,$2,$3,$4,$5)
     }
 }

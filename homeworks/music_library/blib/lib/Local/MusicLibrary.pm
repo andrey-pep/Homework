@@ -33,12 +33,11 @@ sub table_out {
     my $i = 0;
     my $string_len = 0;
     my $columns = shift;
-    #while ( ref ( $columns[$i] = shift ) ne "HASH" ) { $i++; }       #считываем данные о столбцах
-    #unshift(@_,pop (@columns));
-    if (@$columns == 0) {
+    my $music = shift; 
+    if (@$columns == 0 || @$music == 0) {
         exit;
     }
-    my $music = shift;                                                 #и считываем массив с треками
+                                                #и считываем массив с треками
     my $separator = '|';
     for my $item (@$columns) {
         if (defined $item) {
