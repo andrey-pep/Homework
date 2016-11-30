@@ -45,7 +45,7 @@ sub table_out {
     }
     $string_len += @columns + 1;
     print "/";
-    for ($i = 0; $i<$string_len - 2; $i++) { print "-"; }
+    print '-' x ($string_len - 2);
     print "\\";
     say "";
     $i = 0;
@@ -57,20 +57,18 @@ sub table_out {
         }
         print "|\n";
         last if $i == @music - 1;
-        print "|";
+        print '|';
         for my $item (@columns) {
             my $len = int($len_hash{$item});
-            for (my $j = 0; $j < $len; $j++) {
-                print ("-");
-            }
+            print "-" x $len;
             print "+";
         }
         print ("\b|\n");
         $i++;
     }
-    print "\\";
-    for ($i = 0; $i<$string_len - 2; $i++) { print "-"; }
-    print "/";
+    print '\\';
+    print '-' x ($string_len - 2);
+    print '/';
     say "";
     return @music if wantarray;
     1;

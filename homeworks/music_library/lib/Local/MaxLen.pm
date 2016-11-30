@@ -18,7 +18,7 @@ sub max_len {
             $max = $tmp;
         }
     }
-    return $max + 2;
+    return $max;
     1;
 }
 1;

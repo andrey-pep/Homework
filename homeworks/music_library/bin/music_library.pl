@@ -8,6 +8,7 @@ use Local::MusicLibrary;
 use Local::KeyWork;
 no warnings 'experimental';
 use utf8;
+use feature 'say';
 
 our $VERSION = '1.1';
 my $i = 0;
@@ -31,13 +32,15 @@ while (<>) {
 my @columns;
 
 if (defined $keys{columns}) {
+    #@columns = $keys{columns};
+    say @columns;
     for ($i = 0; defined $keys{columns}[$i]; $i++) {
         $columns[$i] = $keys{columns}[$i];
     }
 }
-else {@columns = ("band","year","album","treck","format"); }
+else {@columns = ("band","year","album","track","format"); }
 
-for my $item ("band","year","album","treck","format") {
+for my $item ("band","year","album","track","format") {
     if (defined $keys{$item}) {
         @music = reduce_mus($keys{$item},$item,@music);
     }

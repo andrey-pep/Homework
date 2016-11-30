@@ -10,7 +10,7 @@ use utf8;
 our $VERSION = '1.2';
 
 sub add_treck {
-        my %hash_out = (band => shift, year =>shift, album => shift, treck => shift, format => shift);
+        my %hash_out = (band => shift, year =>shift, album => shift, track => shift, format => shift);
         return \%hash_out;
 }
 
