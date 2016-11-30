@@ -43,9 +43,13 @@ sub table_out {
         $len_hash{$item} = max_len($item,@music);
         $string_len+= $len_hash{$item} + 2;
     }
+    my $separator = '|';
+    for my $item (@columns) {
+        $separator = $separator.sprintf("%s+", '-'x($len_hash{$item} + 2));
+    }
+    chop $separator;
+    $separator = $separator.'|';
     $string_len += @columns + 1;
-    my $separator = sprintf("lol %s+%d\n", '-'x($len_hash{band} + 2),3x5);
-    print $separator;
     printf ("/%s\\\n",'-'x($string_len - 2));
     $i = 0;
     for (@music) {       
@@ -54,18 +58,10 @@ sub table_out {
         }
         print "|\n";
         last if $i == @music - 1;
-        print '|';
-        for my $item (@columns) {
-            print "-" x int($len_hash{$item} + 2);
-            print "+";
-        }
-        print ("\b|\n");
+        say $separator;
         $i++;
     }
-    print '\\';
-    print '-' x ($string_len - 2);
-    print '/';
-    say "";
+    printf ("\\%s/\n",'-'x($string_len - 2));
     return @music if wantarray;
     1;
 }
