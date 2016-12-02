@@ -15,20 +15,21 @@ use Getopt::Long;
 our $VERSION = '1.1';
 my $i = 0;
 
-my %options = ();
-my $band;
-GetOptions( "band" => \$band);
+my %keys = ();
 
-my @arguments;
-while (@ARGV) {
-    $arguments[$i++] = shift @ARGV;
-}
-
-my %keys = make_arg_hash (@arguments);
+GetOptions( \%keys,
+    "band=s",
+    "year=s",
+    "album=s",
+    "track=s",
+    "format=s",
+    "sort=s",
+    "columns=s" );
 
 my @music;
 
 $i = 0;
+
 while (<>) {
     if (/\.\/([\s\w\-]+)\/(\d+) - ([\s\w\-]+)\/([\s\w\-]+)\.(\w+)\s?$/g) {
         $music[$i++] = add_treck($1,$2,$3,$4,$5)
@@ -38,9 +39,7 @@ while (<>) {
 my @columns;
 
 if (defined $keys{columns}) {
-    for ($i = 0; defined $keys{columns}[$i]; $i++) {
-        $columns[$i] = $keys{columns}[$i];
-    }
+    @columns = split (/,/, $keys{columns});
 }
 else {@columns = ("band","year","album","track","format"); }
 
