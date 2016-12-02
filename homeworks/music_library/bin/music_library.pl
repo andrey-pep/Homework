@@ -10,9 +10,14 @@ no warnings 'experimental';
 use utf8;
 use feature 'say';
 use DDP;
+use Getopt::Long;
 
 our $VERSION = '1.1';
 my $i = 0;
+
+my %options = ();
+my $band;
+GetOptions( "band" => \$band);
 
 my @arguments;
 while (@ARGV) {
