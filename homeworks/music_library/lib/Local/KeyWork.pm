@@ -26,7 +26,6 @@ sub reduce_mus {
             else { $i++; }
         }
     }
-    #if (@music == 0) {die "No such compositions";}
     return @music;
 }
 

@@ -7,12 +7,10 @@ use Local::Parse;
 use Local::MusicLibrary;
 use Local::KeyWork;
 no warnings 'experimental';
-use utf8;
 use feature 'say';
-use DDP;
 use Getopt::Long;
 
-our $VERSION = '1.1';
+our $VERSION = '1.2';
 my $i = 0;
 
 my %keys = ();
@@ -27,8 +25,6 @@ GetOptions( \%keys,
     "columns=s" );
 
 my @music;
-
-$i = 0;
 
 while (<>) {
     if (/\.\/([\s\w\-]+)\/(\d+) - ([\s\w\-]+)\/([\s\w\-]+)\.(\w+)\s?$/g) {
