@@ -7,9 +7,8 @@ use Local::Parse;
 use Local::MusicLibrary;
 use Local::KeyWork;
 no warnings 'experimental';
-use feature 'say';
 use Getopt::Long;
-use DDP;
+use 5.010;
 
 our $VERSION = '1.2';
 my $i = 0;
@@ -28,17 +27,8 @@ GetOptions( \%keys,
 my @music;
 
 while (<>) {
-    if (/\.\/(?<band>[\s\w\-]+)\/(?<year>\d+) - (?<album>[\s\w\-]+)\/(?<track>[\s\w\-]+)\.(?<format>\w+)\s?$/g) {
-       my %hash = ("band"   => $+{band},
-                   "year"   => $+{year},
-                   "album"  => $+{album},
-                   "track"  => $+{track},
-                   "format" => $+{format} );
-        #my %hash = ($+{band},$+{year},$+{album},$+{track},$+{format});
-        $music[$i++] = \%hash;
-       # p %hash;
+    Local::Parse::add_track(\$_,\@music);
     }
-}
 
 my @columns;
 

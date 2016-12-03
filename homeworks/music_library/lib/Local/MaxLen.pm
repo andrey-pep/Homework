@@ -5,6 +5,7 @@ use warnings;
 use base qw(Exporter);
 our @EXPORT_OK = qw( max_len );
 our @EXPORT = qw( max_len );
+use 5.010;
 
 our $VERSION = '1.2';
 

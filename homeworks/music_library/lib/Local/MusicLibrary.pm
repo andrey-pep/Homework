@@ -7,7 +7,7 @@ use Local::MaxLen;
 use base qw(Exporter);
 our @EXPORT_OK = qw( table_out );
 our @EXPORT = qw( table_out );
-use feature 'say';
+use 5.010;
 
 =encoding utf8
 
