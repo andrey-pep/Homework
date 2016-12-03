@@ -36,7 +36,7 @@ sub table_out {
     if (@$columns == 0 || @$music == 0) {
         exit;
     }
-                                                #и считываем массив с треками
+    
     my $separator = '|';
     for my $item (@$columns) {
         if (defined $item) {
