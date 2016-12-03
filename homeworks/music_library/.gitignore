@@ -1,1 +1,7 @@
 bin.my
+.swp
+MYMETA.json
+MYMETA.yml
+Makefile
+README.md~
+pm_to_blib
