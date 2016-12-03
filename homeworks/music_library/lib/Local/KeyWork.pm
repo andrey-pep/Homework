@@ -6,6 +6,7 @@ use diagnostics;
 use base qw(Exporter);
 our @EXPORT_OK = qw( reduce_mus sort_mus);
 our @EXPORT = qw( reduce_mus sort_mus);
+use DDP;
 
 our $VERSION = '1.2';
 
@@ -14,19 +15,16 @@ sub reduce_mus {
     my $category = shift;
     my @music = @_;
     my $i = 0;
+    my @res;
+    my @out;
     if ($category eq "year") {
-        while (defined $music[$i]) {
-            if ($music[$i]{$category} != $the_chosen_one) {splice (@music,$i,1);}
-            else { $i++; }
-        }
+        @res = grep { $music[$_]->{$category} == $the_chosen_one } 0..$#music;
     }
     else {
-        while (defined $music[$i]) {
-            if ($music[$i]{$category} ne $the_chosen_one) {splice (@music,$i,1);}
-            else { $i++; }
-        }
+        @res = grep { $music[$_]->{$category} eq $the_chosen_one } 0..$#music;
     }
-    return @music;
+    foreach ($i = 0; $i < @res; $i++) { $out[$i] = $music[$res[$i]];}
+    return @out;
 }
 
 sub sort_mus {

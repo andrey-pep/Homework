@@ -9,6 +9,7 @@ use Local::KeyWork;
 no warnings 'experimental';
 use feature 'say';
 use Getopt::Long;
+use DDP;
 
 our $VERSION = '1.2';
 my $i = 0;
@@ -27,8 +28,15 @@ GetOptions( \%keys,
 my @music;
 
 while (<>) {
-    if (/\.\/([\s\w\-]+)\/(\d+) - ([\s\w\-]+)\/([\s\w\-]+)\.(\w+)\s?$/g) {
-        $music[$i++] = add_treck($1,$2,$3,$4,$5)
+    if (/\.\/(?<band>[\s\w\-]+)\/(?<year>\d+) - (?<album>[\s\w\-]+)\/(?<track>[\s\w\-]+)\.(?<format>\w+)\s?$/g) {
+       my %hash = ("band"   => $+{band},
+                   "year"   => $+{year},
+                   "album"  => $+{album},
+                   "track"  => $+{track},
+                   "format" => $+{format} );
+        #my %hash = ($+{band},$+{year},$+{album},$+{track},$+{format});
+        $music[$i++] = \%hash;
+       # p %hash;
     }
 }
 
