@@ -5,6 +5,8 @@ use strict;
 use base qw(Exporter);
 our @EXPORT_OK = qw( parse_json );
 our @EXPORT = qw( parse_json );
+use DDP;
+use 5.010;
 
 sub parse_json {
 my $source = shift;
@@ -13,11 +15,12 @@ my %hash;
 for ($source) {
 	while (pos() < length()) {
 		my $key;
-		if (/\G[,\s]*"([^\{\[\(\]\}\)]+?)":\s?/gsc) {
+		if (/\G[,\s]*"([^\{\[\(\]\}\)]+?)":\s?/gc) {
 			$key = $1;
         }
-		if (/\G\s*\"([^"\\]*)\s*/gc) {
+		if (/\G\"([^"\\]*)\s*/gsc) {
 			my $str = $1;
+			say $str;
 			while(!(/\G"/gc)) {
 				if (/\G\\([nt])/gc)
                 {
@@ -34,7 +37,7 @@ for ($source) {
                 {
                     $str = $str.'"';
                 }
-                elsif(/\G\\u(\d{3,4})/gc)
+                elsif(/\G\\u(\d{4})/gc)
                 {
                     my $tmp = chr(hex $1);
                     $str = $str.$tmp;
@@ -45,7 +48,7 @@ for ($source) {
                 }
                 else
                 {
-                    /\G([^"\\]*)\s*/gc;
+                    /\G(\s*[^"\\]*\s*)/gc;
                     $str = $str.$1;
                 }
 			}
@@ -75,7 +78,7 @@ for ($source) {
 			chop $str;
 			if ($str =~ /^[\{\[]/m) { $t[$i++] = parse_json($str);}
 			else {
-			@t = split (/(?<!\\["])(?<=["\d]),(?= ?[\"\d\}\]])\s?/s,$str);
+			@t = split (/(?<!\\["])(?<=["\d]),(?= ?[\s\-\"\d\}\]])\s?/,$str);
 			for(@t) {
 				$t[$i]= parse_json($t[$i]);
 				$i++;

@@ -186,8 +186,7 @@ PERL_ARCHIVE_AFTER =
 
 TO_INST_PM = JSONParser.pm \
 	chern.pl \
-	lib/Local/JSONParser.pm \
-	shit.pl
+	lib/Local/JSONParser.pm
 
 
 # --- MakeMaker platform_constants section:
@@ -866,8 +865,7 @@ pm_to_blib : $(FIRST_MAKEFILE) $(TO_INST_PM)
 	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
 	  'JSONParser.pm' '$(INST_LIB)/Local/JSONParser.pm' \
 	  'chern.pl' '$(INST_LIB)/Local/chern.pl' \
-	  'lib/Local/JSONParser.pm' 'blib/lib/Local/JSONParser.pm' \
-	  'shit.pl' '$(INST_LIB)/Local/shit.pl' 
+	  'lib/Local/JSONParser.pm' 'blib/lib/Local/JSONParser.pm' 
 	$(NOECHO) $(TOUCH) pm_to_blib
 
 
