@@ -6,21 +6,17 @@ use base qw(Exporter);
 our @EXPORT_OK = qw( parse_json );
 our @EXPORT = qw( parse_json );
 use DDP;
+use Encode qw(decode);
 use 5.010;
 
 sub parse_json {
-my $source = shift;
+my $source = \$_[0];
 #return JSON::XS->new->utf8->decode($source);
 my %hash;
-for ($source) {
+for ($$source) {
 	while (pos() < length()) {
-		my $key;
-		if (/\G[,\s]*"([^\{\[\(\]\}\)]+?)":\s?/gc) {
-			$key = $1;
-        }
-		if (/\G\"([^"\\]*)\s*/gsc) {
-			my $str = $1;
-			say $str;
+		if (/\G\s*"([^"\\]*)/gc) {
+			my $str = decode ("utf8", $1);
 			while(!(/\G"/gc)) {
 				if (/\G\\([nt])/gc)
                 {
@@ -37,74 +33,47 @@ for ($source) {
                 {
                     $str = $str.'"';
                 }
-                elsif(/\G\\u(\d{4})/gc)
+                elsif(/\G\\u(\w{4})/gc)
                 {
                     my $tmp = chr(hex $1);
                     $str = $str.$tmp;
                 }
-                elsif (/\G\\/gc)
+                elsif(/\G([^"\\]*)\s*/gc)
                 {
-                    die "error";
+					$str = $str.decode("utf8", $1);
                 }
-                else
-                {
-                    /\G(\s*[^"\\]*\s*)/gc;
-                    $str = $str.$1;
-                }
+				elsif(/\G(\\\\)/gc) {
+					$str = $str.'\\';
+				}
+				else { die $1; }
 			}
-			if ($key) {
-				$hash{$key} = $str;
-			}
-			else {return $str;}
+			return $str;
 		}
 		elsif (/\G[,\s]*(-?\d+?[\.eE]?\d*[-+]*\d*)[,\s]*/gc) {
-			if ($key) {
-				$hash{$key} = $1;
-            }
-			else {return $1;}
+			return $1;
 		}
-		elsif (/\G[\,\s\:]*[\[]\s*/gc) {
-			my $str = "";
-			my $scope_amount1 = 1;
-			my $scope_amount2 = 0;
-			my @t;
-			my $i = 0;
-			while ($scope_amount1 > $scope_amount2) {
-            if (/\G(.*?)(\[|\])\s?/gcs) {
-				if ($2 eq '[') {$scope_amount1++; $str = $str.$1.$2;}
-				elsif ($2 eq ']') {$str = $str.$1.$2; $scope_amount2++;};
-			    }
-			}
-			chop $str;
-			if ($str =~ /^[\{\[]/m) { $t[$i++] = parse_json($str);}
-			else {
-			@t = split (/(?<!\\["])(?<=["\d]),(?= ?[\s\-\"\d\}\]])\s?/,$str);
-			for(@t) {
-				$t[$i]= parse_json($t[$i]);
-				$i++;
-			}
-			}
-			if ($key) {
-				$hash{$key} = \@t;
-            }
-			else {return \@t;}
+		elsif(/\G\s*[\'\"]?\[/gc) {
+		my $i = 0;
+		my @subarr;
+		while (!(/\G\s*\][\'\"]?/gc)) {
+			$subarr[$i++] = parse_json($$source);
+			/\G\s*,/gc;
+		}
+			return \@subarr
         }
-		elsif (/\G[\,\s]*[\{]\s*/gc) {
-			my $str = "";
-			my $scope_amount1 = 1;
-			my $scope_amount2 = 0;
-			while ($scope_amount1 > $scope_amount2) {
-            if (/\G(.*?)\s?(\{|\})\s?/gcs) {
-				if ($2 eq '{') {$scope_amount1++; $str = $str.$1.$2;}
-				elsif ($2 eq '}') {$str = $str.$1.$2; $scope_amount2++;};
-			    }
-			}
-			chop $str;
-			if ($key) {
-				$hash{$key} = parse_json($str);
+		elsif (/\G\s*\{/gc) {
+            my %subhesh;
+            while(!(/\G\s*\}/gc)) {
+                if (/\G\s*(\".*?\")\s*:/gc) {
+                    my $key = $1;
+					$key = parse_json($key);
+                    $subhesh{$key} = parse_json($$source);
+                    /\G\s*,/gc;
+                }
+                else {die "There's some problems with JSON";}
             }
-			else {return parse_json($str);}
-            }
+            return \%subhesh;
+        }
 		else
 			{die "There's some problems with JSON";}
 	}
