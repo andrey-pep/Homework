@@ -66,6 +66,7 @@ for my $source (
 	'simple string'
 	#qq/{"key\nmulti":"value\nmulti"}/,
 ) {
+diag "$source";
 	my ($edied,$expect) = (!eval { $JSON->decode( $source ); 1},"$@");
 	my ($rdied,$res) = (!eval { parse_json( $source ); 1},"$@");
 	if (!$edied) {
