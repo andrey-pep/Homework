@@ -8,6 +8,7 @@ our @EXPORT = qw( parse_json );
 use DDP;
 use Encode qw(decode);
 use 5.010;
+my $in_scope = 0;
 
 sub parse_json {
 my $source = \$_[0];
@@ -16,6 +17,7 @@ my %hash;
 for ($$source) {
 	while (pos() < length()) {
 		if (/\G\s*"([^"\\]*)/gc) {
+			if ($in_scope == 0) { die $!;}
 			my $str = decode ("utf8", $1);
 			while(!(/\G"/gc)) {
 				if (/\G\\([nt])/gc)
@@ -50,18 +52,22 @@ for ($$source) {
 			return $str;
 		}
 		elsif (/\G[,\s]*(-?\d+?[\.eE]?\d*[-+]*\d*)[,\s]*/gc) {
+			if ($in_scope == 0) { die $!;}
 			return $1;
 		}
 		elsif(/\G\s*[\'\"]?\[/gc) {
+		$in_scope += 1;
 		my $i = 0;
 		my @subarr;
 		while (!(/\G\s*\][\'\"]?/gc)) {
 			$subarr[$i++] = parse_json($$source);
 			/\G\s*,/gc;
 		}
-			return \@subarr
+			$in_scope -= 1;
+			return \@subarr;
         }
 		elsif (/\G\s*\{/gc) {
+			$in_scope += 1;
             my %subhesh;
             while(!(/\G\s*\}/gc)) {
                 if (/\G\s*(\".*?\")\s*:/gc) {
@@ -72,6 +78,7 @@ for ($$source) {
                 }
                 else {die "There's some problems with JSON";}
             }
+			$in_scope -= 1;
             return \%subhesh;
         }
 		else
