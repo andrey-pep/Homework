@@ -5,7 +5,6 @@ use strict;
 use base qw(Exporter);
 our @EXPORT_OK = qw( parse_json );
 our @EXPORT = qw( parse_json );
-use DDP;
 use Encode qw(decode);
 use 5.010;
 my $in_scope = 0;
@@ -15,7 +14,6 @@ sub parse_json {
 	#return JSON::XS->new->utf8->decode($source);
 	for ($$source) {
 		if (/\G\s*"([^"\\]*)/gc) {
-			if ($in_scope == 0) { die $!;}
 			my $str = decode ("utf8", $1);
 			while(!(/\G"/gc)) {
 				if (/\G\\([nt])/gc)
@@ -50,7 +48,6 @@ sub parse_json {
 			return $str;
 		}
 		elsif (/\G\s*(-?\d+[\.eE]?\d*[-+]*\d*)/gc) {
-			if ($in_scope == 0) { die $!;}
 			return $1;
 		}
 		elsif(/\G\s*[\'\"]?\[/gc) {
@@ -79,6 +76,7 @@ sub parse_json {
 			$in_scope -= 1;
             return \%subhesh;
         }
+		#elsif ($in_scope == 0) { die "$1    $in_scope"; }
 		else
 			{die "There's some problems with JSON";}
 	}

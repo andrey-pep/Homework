@@ -73,6 +73,7 @@ diag "$source";
 		diag "Malformed test: $source";
 		next;
 	};
+diag "$rdied $edied $res";
 	ok $rdied, 'died ok' or do {
 		diag "for source: '", explain($source),"'";
 		diag "expected something like: ",explain($expect);
