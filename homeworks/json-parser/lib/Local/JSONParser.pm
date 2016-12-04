@@ -43,12 +43,12 @@ sub parse_json {
 				elsif(/\G(\\\\)/gc) {
 					$str = $str.'\\';
 				}
-				else { die $1; }
+				else { die "There's some problems with JSON1"; }
 			}
 			return $str;
 		}
 		elsif (/\G\s*(-?\d+[\.eE]?\d*[-+]*\d*)/gc) {
-			return $1;
+			die "There's some problems with JSON2" if $in_scope == 0 or return $1;
 		}
 		elsif(/\G\s*[\'\"]?\[/gc) {
 			$in_scope += 1;
@@ -71,14 +71,13 @@ sub parse_json {
                     $subhesh{$key} = parse_json($$source);
                     /\G\s*,/gc;
                 }
-                else {die "There's some problems with JSON";}
+                else {die "There's some problems with JSON3 $in_scope";}
             }
 			$in_scope -= 1;
             return \%subhesh;
         }
-		#elsif ($in_scope == 0) { die "$1    $in_scope"; }
 		else
-			{die "There's some problems with JSON";}
+			{ $in_scope = 0; die "There's some problems with JSON4 $in_scope";}
 	}
 }
 1;
