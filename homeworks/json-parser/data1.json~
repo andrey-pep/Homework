@@ -1,1 +1,0 @@
-{ "key1": "string value", "keylol": "new string", "key2": -3.1415, "key3": ["nested array", "lol"], "key4": { "nested": "object" }}
