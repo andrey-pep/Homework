@@ -71,13 +71,13 @@ sub parse_json {
                     $subhesh{$key} = parse_json($$source);
                     /\G\s*,/gc;
                 }
-                else {die "There's some problems with JSON3 $in_scope";}
+                else { die "There's some problems with JSON3 $in_scope"; }
             }
 			$in_scope -= 1;
             return \%subhesh;
         }
 		else
-			{ $in_scope = 0; die "There's some problems with JSON4 $in_scope";}
+			{ $in_scope = 0; die "There's some problems with JSON4 $in_scope"; }
 	}
 }
 1;
