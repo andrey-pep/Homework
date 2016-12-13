@@ -6,8 +6,8 @@ use diagnostics;
 use base qw(Exporter);
 our @EXPORT_OK = qw( reduce_mus sort_mus);
 our @EXPORT = qw( reduce_mus sort_mus);
+use Scalar::Util qw( looks_like_number );
 use 5.010;
-use DDP;
 
 our $VERSION = '1.2';
 
@@ -18,7 +18,7 @@ sub reduce_mus {
     my $i = 0;
     my @res;
     my @out;
-    if ($category eq "year") {
+    if (looks_like_number $_) {
         @res = grep { $_->{$category} == $the_chosen_one } @music;
     }
     else {
