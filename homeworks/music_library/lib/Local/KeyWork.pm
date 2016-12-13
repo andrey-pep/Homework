@@ -15,24 +15,28 @@ sub reduce_mus {
     my $the_chosen_one = shift;
     my $category = shift;
     my @music = @_;
-    my $i = 0;
     my @res;
-    my @out;
-    if (looks_like_number $_) {
-        @res = grep { $_->{$category} == $the_chosen_one } @music;
-    }
-    else {
-        @res = grep { $_->{$category} eq $the_chosen_one } @music;
-    }
+    @res = grep {
+        if ( looks_like_number $_->{$category} ) { 
+            $_->{$category} == $the_chosen_one;
+        }
+        else {
+            $_->{$category} eq $the_chosen_one;
+        }
+    } @music;
     return @res;
 }
 
 sub sort_mus {
     my $category = shift;
     my @music = @_;
-    if ($category eq "year") {
-        @music = sort { $a->{$category} <=> $b->{$category} } @music;
-    }
-    else { @music = sort {$a->{$category} cmp $b->{$category} } @music}
+    @music = sort {
+        if ( looks_like_number $a->{$category}) {
+            $a->{$category} <=> $b->{$category};
+            }
+        else {
+            $a->{$category} cmp $b->{$category};
+        }
+    } @music;
     return @music;
 }
