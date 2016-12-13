@@ -13,13 +13,9 @@ my $i = 0;
 sub add_track {
         my $source = shift;
         if ( $$source =~ /\.\/(?<band>[\s\w\-]+)\/(?<year>\d+) - (?<album>[\s\w\-]+)\/(?<track>[\s\w\-]+)\.(?<format>\w+)\s?$/g) {
-        my %hash = ("band"   => $+{band},
-                   "year"   => $+{year},
-                   "album"  => $+{album},
-                   "track"  => $+{track},
-                   "format" => $+{format} );
-        my $music = shift;
-        $$music[$i++] = \%hash;
+                my %hash = %+;
+                my $music = shift;
+                $$music[ $#$music + 1 ] = \%hash;
         }
 }
 1

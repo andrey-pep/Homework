@@ -18,12 +18,12 @@ sub reduce_mus {
     my $i = 0;
     my @res;
     my @out;
-    #if ($category eq "year") {
-     #   @res = grep { $_->{$category} == $the_chosen_one } @music;
-    #}
-    #else {
+    if ($category eq "year") {
+        @res = grep { $_->{$category} == $the_chosen_one } @music;
+    }
+    else {
         @res = grep { $_->{$category} eq $the_chosen_one } @music;
-    #}
+    }
     return @res;
 }
 

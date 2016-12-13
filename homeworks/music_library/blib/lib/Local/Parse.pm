@@ -19,7 +19,7 @@ sub add_track {
                    "track"  => $+{track},
                    "format" => $+{format} );
         my $music = shift;
-        $$music[$i++] = \%hash;
+        $$music[ @#$music + 1 ] = \%hash;
         }
 }
 1

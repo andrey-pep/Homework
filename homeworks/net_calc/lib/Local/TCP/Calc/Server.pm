@@ -24,14 +24,17 @@ sub start_server {
 	$max_forks_per_task = $opts{max_forks_per_task} // die "max_forks_per_task required";
 	my $max_receiver    = $opts{max_receiver} // die "max_receiver required"; 
 	...
+	my $fh;
 	my $server = IO::Socket::INET->new(
 	LocalPort => $port,
 	Type      => SOCK_STREAM,
 	ReuseAddr => 1,
+	Proto = 'tcp',
 	Listen    => $max_receiver)		# Инициализируем сервер
 	or die "Can't create server on port $port : $@ $/";
 	my $q = Local::TCP::Calc::Server::Queue->new(
-	
+	f_handle = ,
+	max_task = $max_receiver
 	);		# Инициализируем очередь
   	...
 	$q->init();

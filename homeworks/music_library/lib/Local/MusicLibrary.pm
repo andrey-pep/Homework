@@ -8,7 +8,6 @@ use base qw(Exporter);
 our @EXPORT_OK = qw( table_out );
 our @EXPORT = qw( table_out );
 use 5.010;
-use DDP;
 =encoding utf8
 
 =head1 NAME
@@ -36,8 +35,7 @@ sub table_out {
     if (@$columns == 0 || @$music == 0) {
         exit;
     }
-    
-    my $separator = '|';
+    my $separator = "\n|";
     for my $item (@$columns) {
         if (defined $item) {
             $len_hash{$item} = max_len($item,@$music);
@@ -46,29 +44,19 @@ sub table_out {
         }
     }
     chop $separator;
-    $separator = $separator;
+    $separator = $separator."|\n";
     $string_len += @$columns + 1;
     printf ("/%s\\\n",'-'x($string_len - 2));
-    $i = 0;
+    my @output;
     for my $item (@$music) {
-        my @out = map {sprintf("| %$len_hash{$_}s",$$item{$_})} @$columns;
-        {
-            local $\ = "|\n";
-            my $str = "@out ";
-            print $str;
-            print $separator;
-        }
+        my $str = "|".join ("|", map {sprintf(" %$len_hash{$_}s ",$$item{$_})} @$columns)."|";
+        $output[ $#output + 1 ] = $str;
     }
-    for (@$music) {       
-        for my $item (@$columns) {
-            printf ("| %$len_hash{$item}s ", $$music[$i]{$item});
-        }
-        print "|\n";
-        last if $i == @$music - 1;
-        say $separator;
-        $i++;
+    {
+        local $, = $separator;
+        print @output;
     }
-    printf ("\\%s/\n",'-'x($string_len - 2));
+    printf ("\n\\%s/\n",'-'x($string_len - 2));
     return $music if wantarray;
     1;
 }
