@@ -7,6 +7,7 @@ use base qw(Exporter);
 our @EXPORT_OK = qw( reduce_mus sort_mus);
 our @EXPORT = qw( reduce_mus sort_mus);
 use 5.010;
+use DDP;
 
 our $VERSION = '1.2';
 
@@ -18,13 +19,12 @@ sub reduce_mus {
     my @res;
     my @out;
     if ($category eq "year") {
-        @res = grep { $music[$_]->{$category} == $the_chosen_one } 0..$#music;
+        @res = grep { $_->{$category} == $the_chosen_one } @music;
     }
     else {
-        @res = grep { $music[$_]->{$category} eq $the_chosen_one } 0..$#music;
+        @res = grep { $_->{$category} eq $the_chosen_one } @music;
     }
-    foreach ($i = 0; $i < @res; $i++) { $out[$i] = $music[$res[$i]];}
-    return @out;
+    return @res;
 }
 
 sub sort_mus {

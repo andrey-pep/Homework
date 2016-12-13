@@ -30,14 +30,15 @@ while (<>) {
     Local::Parse::add_track(\$_,\@music);
     }
 
+my @columns_default = ("band","year","album","track","format");
 my @columns;
 
 if (defined $keys{columns}) {
     @columns = split (/,/, $keys{columns});
 }
-else {@columns = ("band","year","album","track","format"); }
+else {@columns = @columns_default }
 
-for my $item ("band","year","album","track","format") {
+for my $item (@columns_default) {
     if (defined $keys{$item}) {
         @music = reduce_mus($keys{$item},$item,@music);
     }
@@ -46,6 +47,5 @@ for my $item ("band","year","album","track","format") {
 if (defined $keys{sort}) {
     @music = sort_mus($keys{sort},@music);
 }
-
 table_out(\@columns,\@music);
 1;

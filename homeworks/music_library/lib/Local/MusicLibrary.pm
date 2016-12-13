@@ -8,7 +8,7 @@ use base qw(Exporter);
 our @EXPORT_OK = qw( table_out );
 our @EXPORT = qw( table_out );
 use 5.010;
-
+use DDP;
 =encoding utf8
 
 =head1 NAME
@@ -46,10 +46,19 @@ sub table_out {
         }
     }
     chop $separator;
-    $separator = $separator.'|';
+    $separator = $separator;
     $string_len += @$columns + 1;
     printf ("/%s\\\n",'-'x($string_len - 2));
     $i = 0;
+    for my $item (@$music) {
+        my @out = map {sprintf("| %$len_hash{$_}s",$$item{$_})} @$columns;
+        {
+            local $\ = "|\n";
+            my $str = "@out ";
+            print $str;
+            print $separator;
+        }
+    }
     for (@$music) {       
         for my $item (@$columns) {
             printf ("| %$len_hash{$item}s ", $$music[$i]{$item});
