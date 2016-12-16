@@ -21,7 +21,6 @@ our $VERSION = '1.00';
 sub new {
         my ($class, %params) = @_;
         $params{reduced} = $params{initial_value};
-        $self -> {reduced} = $self -> {initial_value};
 	return bless \%params, $class;
 }
 
@@ -32,13 +31,12 @@ sub reduced {
 
 sub reduce_n {
         my ($self, $n) = @_;
-	for (0..$n) { last if !( defined $self -> reduce() ); }
+	for (0..$n-1) { last if !(defined $self -> reduce()); }
         return $self -> reduced;
 }
 
 sub reduce_all {
         my $self= shift;
-        $self -> {reduced} = $self -> {initial_value};
         while ( defined $self -> reduce() ) {}
         return $self -> reduced;
 }

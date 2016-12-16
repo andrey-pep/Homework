@@ -6,16 +6,14 @@ use utf8;
 use parent 'Local::Reducer';
 
 sub reduce {
-    my $self = shift;
-    my $tmp = $self -> {source} -> next;
-    return if !$tmp;
+    my $self= shift;
+    my $tmp = $self -> {source} -> next or return;
     my $default = "Wrong argument input";
     my $row_class = $self -> {row_class} -> new (str => $tmp);
     my $top = $row_class -> get( $self -> {top}, $default);
     my $bottom = $row_class -> get( $self -> {bottom}, $default);
     return if ( $top or $bottom ) eq $default;
-    my $difference = abs($top-$bottom);
-    if ( $difference > $self -> {reduced} ) { return $self -> {reduced} = $difference }
-    else { return $self -> {reduced}; }
+    my $difference = abs( $top-$bottom );
+    $difference > $self -> {reduced} ? return $self -> {reduced} = $difference : return $self -> {reduced};
 }
 1

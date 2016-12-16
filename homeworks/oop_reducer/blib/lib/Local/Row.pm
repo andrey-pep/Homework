@@ -5,7 +5,7 @@ use utf8;
 
 sub new {
     my ($class, %params) = @_;
-    my $str = $class -> parse($params{str});
+    my $str = $class -> parse( $params{str} );
     bless $str,$class;
 }
 
