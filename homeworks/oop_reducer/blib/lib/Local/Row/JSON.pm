@@ -8,7 +8,6 @@ use JSON::XS;
 
 sub parse {
     my ($self,$source) = @_;
-    
     return JSON::XS->new->decode($source);
 }
 1

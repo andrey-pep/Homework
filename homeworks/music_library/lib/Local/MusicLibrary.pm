@@ -48,8 +48,10 @@ sub table_out {
     $string_len += @$columns + 1;
     printf ("/%s\\\n",'-'x($string_len - 2));
     my @output;
+    my $shablon = join ("", map { "| %$len_hash{$_}s " } @$columns);
+    $shablon = $shablon."|";
     for my $item (@$music) {
-        my $str = "|".join ("|", map {sprintf(" %$len_hash{$_}s ",$$item{$_})} @$columns)."|";
+        my $str = sprintf( $shablon, map { $$item{$_} } @$columns );
         $output[ $#output + 1 ] = $str;
     }
     {
