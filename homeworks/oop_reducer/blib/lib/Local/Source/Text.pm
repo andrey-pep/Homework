@@ -11,7 +11,7 @@ has 'text' => ( is => 'rw', isa => 'Str');
 
 sub BUILD {
     my ( $self ) = @_;
-    my $delim = $self -> { delimiter }? $self -> { delimiter } : '\n';
+    my $delim = $self -> { delimiter };
     my @array =  split ( $delim, $self -> { text } );
     $self -> {array} = \@array;
 }
