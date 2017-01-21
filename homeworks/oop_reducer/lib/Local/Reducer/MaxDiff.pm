@@ -19,6 +19,6 @@ sub reduce {
     my $bottom = $row_class -> get( $self -> {bottom}, $default);
     return if ( $top or $bottom ) eq $default;
     my $difference = abs( $top-$bottom );
-    $difference > $self -> {amount} ? return $self -> {amount} = $difference : return $self -> {amount};
+    $difference > $self -> reduced ? return $self -> {reduced} = $difference : return $self -> reduced;
 }
 1

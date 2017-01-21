@@ -17,18 +17,15 @@ my $sum_reducer = Local::Reducer::MaxDiff->new(
 );
 
 
-print "lol\n";
-
-p $sum_reducer -> source -> array;
-
 my $sum_result;
 
 $sum_result = $sum_reducer->reduce_n(2);
 print $sum_result."\n";
+p $sum_reducer -> reduced;
 
 $sum_result = $sum_reducer->reduce_all();
 
 print $sum_result."\n";
+print $sum_reducer -> reduced;
 
-p $sum_reducer;
-p $sum_reducer -> {row_class} -> new ( str => '{"price": 3}' ) -> get( $sum_reducer -> {field}, "\n");
+p $sum_reducer -> source;

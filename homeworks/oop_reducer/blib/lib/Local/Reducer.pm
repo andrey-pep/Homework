@@ -22,16 +22,11 @@ our $VERSION = '2.0';
 has 'source' => ( is => 'rw' );
 has 'row_class' => (is => 'rw' );
 has 'initial_value' => ( is => 'ro', isa => 'Int' );
-has 'amount' => ( is => 'rw', isa => 'Int', builder => '_build_amount' );
+has 'reduced' => ( is => 'rw', isa => 'Int', lazy => 1, builder => '_build_reduced' );
 
-sub _build_amount {
+sub _build_reduced {
         my ($self) = @_;
-        return $self -> initial_value;
-}
-
-sub reduced {
-    my ($self) = @_;
-    return $self-> { amount };
+        return $self -> { initial_value };
 }
 
 sub reduce_n {
