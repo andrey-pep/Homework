@@ -1,1 +1,6 @@
 lib.my
+MYMETA.*
+pm_to_blib
+blib
+.swp
+bin.my

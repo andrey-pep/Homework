@@ -55,11 +55,11 @@ DIRFILESEP = /
 DFSEP = $(DIRFILESEP)
 NAME = Local::Reducer
 NAME_SYM = Local_Reducer
-VERSION = 1.00
+VERSION = 2.0
 VERSION_MACRO = VERSION
-VERSION_SYM = 1_00
+VERSION_SYM = 2_0
 DEFINE_VERSION = -D$(VERSION_MACRO)=\"$(VERSION)\"
-XS_VERSION = 1.00
+XS_VERSION = 2.0
 XS_VERSION_MACRO = XS_VERSION
 XS_DEFINE_VERSION = -D$(XS_VERSION_MACRO)=\"$(XS_VERSION)\"
 INST_ARCHLIB = blib/arch
@@ -182,7 +182,9 @@ PERL_ARCHIVEDEP    =
 PERL_ARCHIVE_AFTER = 
 
 
-TO_INST_PM = lib/Local/Reducer.pm \
+TO_INST_PM = lib/.results.txt.swn \
+	lib/.results.txt.swo \
+	lib/Local/Reducer.pm \
 	lib/Local/Reducer/MaxDiff.pm \
 	lib/Local/Reducer/Sum.pm \
 	lib/Local/Row.pm \
@@ -260,7 +262,7 @@ RCS_LABEL = rcs -Nv$(VERSION_SYM): -q
 DIST_CP = best
 DIST_DEFAULT = tardist
 DISTNAME = Local-Reducer
-DISTVNAME = Local-Reducer-1.00
+DISTVNAME = Local-Reducer-2.0
 
 
 # --- MakeMaker macro section:
@@ -505,7 +507,7 @@ metafile : create_distdir
 	$(NOECHO) $(ECHO) '  directory:' >> META_new.yml
 	$(NOECHO) $(ECHO) '    - t' >> META_new.yml
 	$(NOECHO) $(ECHO) '    - inc' >> META_new.yml
-	$(NOECHO) $(ECHO) 'version: '\''1.00'\''' >> META_new.yml
+	$(NOECHO) $(ECHO) 'version: '\''2.0'\''' >> META_new.yml
 	-$(NOECHO) $(MV) META_new.yml $(DISTVNAME)/META.yml
 	$(NOECHO) $(ECHO) Generating META.json
 	$(NOECHO) $(ECHO) '{' > META_new.json
@@ -542,7 +544,7 @@ metafile : create_distdir
 	$(NOECHO) $(ECHO) '      }' >> META_new.json
 	$(NOECHO) $(ECHO) '   },' >> META_new.json
 	$(NOECHO) $(ECHO) '   "release_status" : "stable",' >> META_new.json
-	$(NOECHO) $(ECHO) '   "version" : "1.00"' >> META_new.json
+	$(NOECHO) $(ECHO) '   "version" : "2.0"' >> META_new.json
 	$(NOECHO) $(ECHO) '}' >> META_new.json
 	-$(NOECHO) $(MV) META_new.json $(DISTVNAME)/META.json
 
@@ -851,7 +853,7 @@ testdb_static :: static pure_all
 # --- MakeMaker ppd section:
 # Creates a PPD (Perl Package Description) for a binary distribution.
 ppd :
-	$(NOECHO) $(ECHO) '<SOFTPKG NAME="Local-Reducer" VERSION="1.00">' > Local-Reducer.ppd
+	$(NOECHO) $(ECHO) '<SOFTPKG NAME="Local-Reducer" VERSION="2.0">' > Local-Reducer.ppd
 	$(NOECHO) $(ECHO) '    <ABSTRACT></ABSTRACT>' >> Local-Reducer.ppd
 	$(NOECHO) $(ECHO) '    <AUTHOR></AUTHOR>' >> Local-Reducer.ppd
 	$(NOECHO) $(ECHO) '    <IMPLEMENTATION>' >> Local-Reducer.ppd
@@ -865,6 +867,8 @@ ppd :
 
 pm_to_blib : $(FIRST_MAKEFILE) $(TO_INST_PM)
 	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
+	  'lib/.results.txt.swn' 'blib/lib/.results.txt.swn' \
+	  'lib/.results.txt.swo' 'blib/lib/.results.txt.swo' \
 	  'lib/Local/Reducer.pm' 'blib/lib/Local/Reducer.pm' \
 	  'lib/Local/Reducer/MaxDiff.pm' 'blib/lib/Local/Reducer/MaxDiff.pm' \
 	  'lib/Local/Reducer/Sum.pm' 'blib/lib/Local/Reducer/Sum.pm' \

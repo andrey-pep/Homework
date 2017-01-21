@@ -14,6 +14,6 @@ sub reduce {
     my $default = "No way";
     my $f = $self -> {row_class} -> new ( str => $tmp ) -> get( $self -> {field}, $default);
     return if $f eq $default;
-    return $self -> {amount} += $f;
+    return $self -> { reduced } += $f;
 }
 1
