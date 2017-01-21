@@ -4,15 +4,16 @@ use warnings;
 use utf8;
 use Moose;
 
-has 'str' => ( is => 'rw', isa => 'Str', builder => '_build_str' );
+has 'str' => ( is => 'ro', isa => 'Str');
+has 'tmp' => ( is => 'rw', isa => 'HashRef', trigger => \&_build_tmp );
 
-sub _build_str {
+sub _build_tmp {
     return 42;
 }
 
 sub get {
     my ($self, $name, $default) = @_;
-    if ( defined $self -> { str } -> { $name } ) { return $self -> { str } -> { $name }; }
+    if ( defined $self -> { tmp } -> { $name } ) { return $self -> { tmp } -> { $name }; }
     else { return $default; }
 }
 1

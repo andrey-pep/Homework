@@ -6,7 +6,7 @@ use utf8;
 use Moose;
 extends 'Local::Row';
 
-sub _build_str {
+sub _build_tmp {
     my ($self,$source) = @_;
     my %output;
     my @res = split (/,/, $source);

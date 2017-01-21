@@ -7,9 +7,9 @@ use Moose;
 extends 'Local::Row';
 use JSON::XS;
 
-sub _build_str {
+sub _build_tmp {
     my ($self,$source) = @_;
-    my $out = JSON::XS -> new -> decode($source);
+    my $out = JSON::XS->new->decode($source);
     return $out;
 }
 1
