@@ -19,8 +19,7 @@ my $sum_reducer = Local::Reducer::Sum->new(
     row_class => 'Local::Row::JSON',
     initial_value => 0,
 );
-
-
+p $sum_reducer -> source -> array;
 my $sum_result;
 
 
@@ -35,3 +34,4 @@ print $sum_result."\n";
 print $sum_reducer -> reduced;
 
 p $sum_reducer -> source;
+p $sum_reducer;
