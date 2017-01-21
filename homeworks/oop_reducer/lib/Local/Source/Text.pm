@@ -6,7 +6,7 @@ use utf8;
 use Moose;
 extends 'Local::Source::Array';
 
-has '+array' => ( lazy =>1 );
+
 has 'delimiter' => ( is => 'rw', isa => 'Str', default => "\n" );
 has 'text' => ( is => 'rw', isa => 'Str');
 

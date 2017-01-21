@@ -12,4 +12,4 @@ sub _build_array {
     return $source;
 }
 
-1
+1;
