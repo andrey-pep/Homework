@@ -6,3 +6,5 @@ blib
 .swp
 bin.my
 Makefile
+Test.pl
+.result.txt.swp
