@@ -1,6 +1,8 @@
 lib.my
-MYMETA.*
+MYMETA.yml
+MYMETA.json
 pm_to_blib
 blib
 .swp
 bin.my
+Makefile
