@@ -1,13 +1,14 @@
 use strict;
 use warnings;
-
-use Test::More tests => 4;
-
 use Local::Reducer::Sum;
 use Local::Source::Array;
 use Local::Row::JSON;
+use Local::Source::Text;
+use Local::Reducer::MaxDiff;
+use 5.010;
+use DDP;
 
-my $diff_reducer = Local::Reducer::MaxDiff->new(
+my $sum_reducer = Local::Reducer::MaxDiff->new(
     top => 'received',
     bottom => 'sended',
     source => Local::Source::Text->new(text =>"sended:1024,received:2048\nsended:0,received:0\nsended:2048,received:10240"),
@@ -15,12 +16,19 @@ my $diff_reducer = Local::Reducer::MaxDiff->new(
     initial_value => 0,
 );
 
+
+print "lol\n";
+
+p $sum_reducer -> source -> array;
+
 my $sum_result;
 
 $sum_result = $sum_reducer->reduce_n(2);
-is($sum_result, 1, 'sum reduced 1');
-is($sum_reducer->reduced, 1, 'sum reducer saved');
+print $sum_result."\n";
 
 $sum_result = $sum_reducer->reduce_all();
-is($sum_result, 6, 'sum reduced all');
-is($sum_reducer->reduced, 6, 'sum reducer saved at the end');
+
+print $sum_result."\n";
+
+p $sum_reducer;
+p $sum_reducer -> {row_class} -> new ( str => '{"price": 3}' ) -> get( $sum_reducer -> {field}, "\n");

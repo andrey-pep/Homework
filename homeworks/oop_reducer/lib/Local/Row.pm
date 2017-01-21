@@ -5,7 +5,7 @@ use utf8;
 use Moose;
 
 has 'str' => ( is => 'ro', isa => 'Str');
-has 'tmp' => ( is => 'rw', isa => 'HashRef', trigger => \&_build_tmp );
+has 'tmp' => ( is => 'rw', isa => 'HashRef', lazy => 1, builder => '_build_tmp' );
 
 sub _build_tmp {
     return 42;
@@ -13,7 +13,7 @@ sub _build_tmp {
 
 sub get {
     my ($self, $name, $default) = @_;
-    if ( defined $self -> { tmp } -> { $name } ) { return $self -> { tmp } -> { $name }; }
+    if ( defined $self -> tmp -> { $name } ) { return $self -> tmp -> { $name }; }
     else { return $default; }
 }
 1

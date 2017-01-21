@@ -4,13 +4,12 @@ use warnings;
 use utf8;
 use Moose;
 
-has 'array' => ( is => 'rw', isa => 'ArrayRef');
-has 'pos' => ( is => 'rw', default => 0, isa => 'Int' );
+has 'array' => ( is => 'rw', isa => 'ArrayRef', lazy => 1, builder => '_build_array' );
+has 'pos' => ( is => 'rw', isa => 'Int',  default => 0 );
 
-#sub BUILD {
- #   my ($self, %array) = @_;
-  #  $array{pos} = 0;
-   # return bless \%array, $self;
-#}
+sub _build_array {
+    my ( $self, $source ) = @_;
+    return $source;
+}
 
 1

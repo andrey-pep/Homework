@@ -8,7 +8,8 @@ extends 'Local::Row';
 use JSON::XS;
 
 sub _build_tmp {
-    my ($self,$source) = @_;
+    my ($self) = @_;
+    my $source = $self -> str;
     my $out = JSON::XS->new->decode($source);
     return $out;
 }

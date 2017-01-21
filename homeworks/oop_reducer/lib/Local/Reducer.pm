@@ -1,4 +1,4 @@
-package Local::Reducer; {
+package Local::Reducer; 
 
 use strict;
 use warnings;
@@ -13,19 +13,25 @@ Local::Reducer - base abstract reducer
 
 =head1 VERSION
 
-Version 1.00
+Version 2.00
 
 =cut
 
-has 'source' => (is => 'rw' );
-has 'row_class' => (is => 'rw' );
-has 'initial_value' => (is => 'rw' );
+our $VERSION = '2.0';
 
-our $VERSION = '1.00';
+has 'source' => ( is => 'rw' );
+has 'row_class' => (is => 'rw' );
+has 'initial_value' => ( is => 'ro', isa => 'Int' );
+has 'amount' => ( is => 'rw', isa => 'Int', builder => '_build_amount' );
+
+sub _build_amount {
+        my ($self) = @_;
+        return $self -> initial_value;
+}
 
 sub reduced {
-    my $self = shift;
-    return $self->{'reduced'};
+    my ($self) = @_;
+    return $self-> { amount };
 }
 
 sub reduce_n {
@@ -42,5 +48,5 @@ sub reduce_all {
 =head1 SYNOPSIS
 
 =cut
-}
+
 1;

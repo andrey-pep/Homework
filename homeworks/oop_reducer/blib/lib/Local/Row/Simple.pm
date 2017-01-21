@@ -7,7 +7,8 @@ use Moose;
 extends 'Local::Row';
 
 sub _build_tmp {
-    my ($self,$source) = @_;
+    my ($self) = @_;
+    my $source = $self -> str;
     my %output;
     my @res = split (/,/, $source);
     for (@res) {
