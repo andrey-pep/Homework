@@ -3,6 +3,7 @@ package Local::Reducer; {
 use strict;
 use warnings;
 use utf8;
+use Moose;
 
 =encoding utf8
 
@@ -16,13 +17,11 @@ Version 1.00
 
 =cut
 
-our $VERSION = '1.00';
+has 'source' => (is => 'rw' );
+has 'row_class' => (is => 'rw' );
+has 'initial_value' => (is => 'rw' );
 
-sub new {
-        my ($class, %params) = @_;
-        $params{reduced} = $params{initial_value};
-	return bless \%params, $class;
-}
+our $VERSION = '1.00';
 
 sub reduced {
     my $self = shift;
@@ -31,7 +30,7 @@ sub reduced {
 
 sub reduce_n {
         my ($self, $n) = @_;
-	for (0..$n-1) { last if !(defined $self -> reduce()); }
+        for (0..$n-1) { last if !(defined $self -> reduce()); }
         return $self -> reduced;
 }
 

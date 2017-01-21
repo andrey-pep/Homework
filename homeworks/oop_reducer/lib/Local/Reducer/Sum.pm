@@ -3,7 +3,8 @@ package Local::Reducer::Sum;
 use strict;
 use warnings;
 use utf8;
-use parent 'Local::Reducer';
+use Moose;
+extends 'Local::Reducer';
 
 sub reduce {
     my $self = shift;

@@ -3,9 +3,10 @@ package Local::Row::Simple;
 use strict;
 use warnings;
 use utf8;
-use parent 'Local::Row';
+use Moose;
+extends 'Local::Row';
 
-sub parse {
+sub _build_str {
     my ($self,$source) = @_;
     my %output;
     my @res = split (/,/, $source);

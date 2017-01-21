@@ -3,7 +3,8 @@ package Local::Source::Array;
 use strict;
 use warnings;
 use utf8;
-use parent 'Local::Source';
+use Moose;
+extends 'Local::Source';
 
 sub next {
     my $self = shift;
