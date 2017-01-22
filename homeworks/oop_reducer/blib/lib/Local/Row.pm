@@ -5,7 +5,7 @@ use utf8;
 use Moose;
 
 has 'str' => ( is => 'ro', isa => 'Str');
-has 'tmp' => ( is => 'rw', isa => 'HashRef', lazy => 1, builder => '_build_tmp' );
+has 'tmp' => ( is => 'ro', isa => 'HashRef', lazy => 1, builder => '_build_tmp' );
 
 sub _build_tmp {
     return 42;

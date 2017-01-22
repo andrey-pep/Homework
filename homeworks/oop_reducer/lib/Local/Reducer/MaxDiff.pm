@@ -7,8 +7,8 @@ use Moose;
 use Local::Row::Simple;
 extends 'Local::Reducer';
 
-has 'top' => ( is => 'rw', isa => 'Str' );
-has 'bottom' => ( is => 'rw', isa => 'Str' );
+has 'top' => ( is => 'ro', isa => 'Str' );
+has 'bottom' => ( is => 'ro', isa => 'Str' );
 
 sub reduce {
     my $self= shift;

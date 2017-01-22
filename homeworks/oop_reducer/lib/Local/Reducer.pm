@@ -19,8 +19,8 @@ Version 2.00
 
 our $VERSION = '2.0';
 
-has 'source' => ( is => 'rw' );
-has 'row_class' => (is => 'rw' );
+has 'source' => ( is => 'ro' );
+has 'row_class' => (is => 'ro' );
 has 'initial_value' => ( is => 'ro', isa => 'Int' );
 has 'reduced' => ( is => 'rw', isa => 'Int', lazy => 1, builder => '_build_reduced' );
 

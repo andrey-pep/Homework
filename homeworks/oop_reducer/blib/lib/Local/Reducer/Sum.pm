@@ -6,7 +6,7 @@ use utf8;
 use Moose;
 extends 'Local::Reducer';
 
-has 'field' => ( is => 'rw', isa => 'Str' );
+has 'field' => ( is => 'ro', isa => 'Str' );
 
 sub reduce {
     my $self = shift;
