@@ -8,15 +8,16 @@ use Local::Reducer::Sum;
 use Local::Source::Array;
 use Local::Row::JSON;
 use Local::Source::FileHandler;
+use Local::Reducer::MinMaxAvg;
 use DDP;
 
-my $diff_reducer = Local::Reducer::MaxDiff->new(
-    top => 'received',
-    bottom => 'sended',
-    source => Local::Source::FileHandler->new(fh => 'Source.JSON'),
-    row_class => 'Local::Row::JSON',
+my $diff_reducer = Local::Reducer::MinMaxAvg->new(
+    field => 'sended',
+    source => Local::Source::FileHandler->new(fh =>"Source"),
+    row_class => 'Local::Row::Simple',
     initial_value => 0,
 );
+
 
 my $diff_result;
 
@@ -27,3 +28,4 @@ p $diff_reducer -> source;
 $diff_result = $diff_reducer->reduce_all();
 p $diff_reducer -> reduced;
 p $diff_reducer -> source;
+p $diff_reducer -> get_min;
