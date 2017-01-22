@@ -12,7 +12,7 @@ use Local::Reducer::MinMaxAvg;
 use DDP;
 
 my $diff_reducer = Local::Reducer::MinMaxAvg->new(
-    field => 'sended',
+    field => 'received',
     source => Local::Source::FileHandler->new(fh =>"Source"),
     row_class => 'Local::Row::Simple',
     initial_value => 0,
@@ -22,10 +22,9 @@ my $diff_reducer = Local::Reducer::MinMaxAvg->new(
 my $diff_result;
 
 $diff_result = $diff_reducer->reduce_n(1);
-p $diff_reducer -> reduced;
 p $diff_reducer -> source;
+p $diff_reducer -> reduced;
 
 $diff_result = $diff_reducer->reduce_all();
-p $diff_reducer -> reduced;
 p $diff_reducer -> source;
-p $diff_reducer -> get_min;
+p $diff_reducer -> reduced;

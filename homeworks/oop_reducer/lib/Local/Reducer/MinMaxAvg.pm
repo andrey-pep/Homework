@@ -7,18 +7,15 @@ use Moose;
 extends 'Local::Reducer';
 
 has 'field' => ( is => 'ro', isa => 'Str' );
-has '+reduced' => ( is => 'rw', builder => '_build_reduced');
+has 'amount' => ( is => 'rw', isa => 'Int', default => '0' );
+has '+reduced' => ( is => 'rw', lazy => 1, builder => '_build_reduced');
 
 sub _build_reduced {
     my ( $self ) = @_;
-    $self -> { get_max } = $self -> initial_value;
-    $self -> { get_min } = $self -> initial_value;
-    $self -> { get_avg } = $self -> initial_value;
-}
-
-sub reduced {
-    my ( $self ) = @_;
-    return $self -> { reduced };
+    $self -> { reduced } -> { get_max } = $self -> { initial_value };
+    $self -> { reduced } -> { get_min } = $self -> { initial_value };
+    $self -> { reduced } -> { get_avg } = $self -> { initial_value };
+    return bless $self -> { reduced };
 }
 
 sub reduce {
@@ -27,29 +24,15 @@ sub reduce {
     my $default = "No way";
     my $f = $self -> {row_class} -> new ( str => $tmp ) -> get( $self -> {field}, $default);
     return if $f eq $default;
-    if ( $f > $self -> get_max ) {
-         $self -> { get_max } = $f;
+    if ( $f > $self -> reduced -> { get_max } ) {
+         $self -> reduced -> { get_max } = $f;
     }
-    if ( $f < $self -> get_min ) {
-         $self -> { get_min } = $f;
+    if ( $f < $self -> reduced -> { get_min } ) {
+         $self -> reduced -> { get_min } = $f;
     }
-    $self -> { avg } += ( $f / 2 );
+    $self -> reduced -> { get_avg } = ( $self -> { amount } + $f ) / $self -> { source } -> { pos };
+    $self -> { amount } += $f;
     return $self -> { reduced };
-}
-
-sub get_max {
-    my ( $self ) = @_;
-    return $self -> { get_max };
-}
-
-sub get_min {
-    my ( $self ) = @_;
-    return $self -> { get_min };
-}
-
-sub get_avg {
-    my ( $self ) = @_;
-    return $self -> { avg };
 }
 
 1
