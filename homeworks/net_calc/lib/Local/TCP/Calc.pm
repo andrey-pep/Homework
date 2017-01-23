@@ -16,25 +16,21 @@ sub pack_header {
 	my $pkg = shift;
 	my $type = shift;
 	my $size = shift;
-	...
 }
 
 sub unpack_header {
 	my $pkg = shift;
 	my $header = shift;
-	...
 }
 
 sub pack_message {
 	my $pkg = shift;
 	my $messages = shift;
-	...
 }
 
 sub unpack_message {
 	my $pkg = shift;
 	my $message = shift;
-	...
 }
 
 1;
