@@ -74,12 +74,13 @@ sub start_server {
 				$receiver_count--;
             }
 			elsif ( $message == TYPE_CHECK_WORK() ) {
-                $message = <$client>;
-				my $answer = $q -> get_status( $message );		# Если пришли с проверкой статуса, получаем статус из очереди и отдаём клиенту
-				print $client $answer[0];
+                $message = <$client>;							# читаем id задания
+				my @answer = $q -> get_status( $message );		# Если пришли с проверкой статуса, получаем статус из очереди и отдаём клиенту
+				print $client $answer[0];						# возвращаем клиенту статус задания
 				if ( $$answer[1] == ( Local::TCP::Calc -> STATUS_DONE() or Local::TCP::Calc -> STATUS_ERROR() ) {		# В случае если статус DONE или ERROR возвращаем на клиент содержимое файла с результатом выполнения  
-					$$answer[1] = Local::TCP::Calc -> pack_message( $$answer[1] );
+					my $fh_with_answer = Local::TCP::Calc -> pack_message( $$answer[1] );				# FileHandler с запакованным сообщением
 					print $client $$answer[1];
+					unlink $fh_with_answer;
 					close ( $client );
 					$receiver_count--;
                 }

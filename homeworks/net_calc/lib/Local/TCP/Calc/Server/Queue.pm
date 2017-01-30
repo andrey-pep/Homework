@@ -76,7 +76,10 @@ sub get_status {
 	
 	my $source = $self->Local::TCP::Calc::Server::Queue->open( Local::TCP::Calc->TYPE_CHECK_WORK() );
 	$output[0] = $source->{ $id }->{ status };			# Возвращаем статус задания по id
-	$output[1] = $source->{ $id }->{ file_name } if defined $source->{ status } == ( Local::TCP::Calc->STATUS_DONE or Local::TCP::Calc->STATUS_ERROR );		# и в случае DONE или ERROR имя файла с результатом
+	if( defined $source->{ status } == ( Local::TCP::Calc->STATUS_DONE or Local::TCP::Calc->STATUS_ERROR )) {		# и в случае DONE или ERROR имя файла с результатом
+		$output[1] = $source->{ $id }->{ file_name };
+		delete $source->{ $id };
+	}
 	$self->Local::TCP::Calc::Server::Queue->close( $source );
 	return \@output;
 }

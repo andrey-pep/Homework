@@ -1,6 +1,8 @@
 package Local::TCP::Calc;
 
 use strict;
+use PerlIO::via::gzip;
+use feature 'say';
 
 sub TYPE_START_WORK {1}
 sub TYPE_CHECK_WORK {2}
@@ -26,11 +28,29 @@ sub unpack_header {
 sub pack_message {
 	my $pkg = shift;
 	my $messages = shift;
+	
+	open( my $packed_fh, '>:via(gzip)', "$messages.gz" ) or die "Can't open $messages: $!";
+	open( my $fh, "<", $messages ) or die $!;
+	while( <$fh>) {
+        print $packed_fh $_;
+    }
+	close $fh;
+	unlink $messages;
+    return $packed_fh;
 }
 
 sub unpack_message {
 	my $pkg = shift;
 	my $message = shift;
+	my @unpacked_fh;
+	
+	open( my $fh, '<:via(gzip)', $message ) or die "Can't open $message: $!";
+	while( <$fh> ) {
+		chomp;
+		$unpacked_fh[ $#unpacked_fh + 1 ] = $_;
+    }
+	close $fh;
+    return \@unpacked_fh;
 }
 
 1;

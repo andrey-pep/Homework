@@ -2,6 +2,7 @@ package Local::TCP::Calc::Server;
 
 use strict;
 use POSIX;
+use Fcntl ':flock';
 use Local::TCP::Calc;
 use Local::TCP::Calc::Server::Queue;
 use Local::TCP::Calc::Server::Worker;
@@ -14,10 +15,14 @@ my $pids_master = {};
 my $receiver_count = 0;
 my $max_forks_per_task = 0;
 
-sub REAPER {
-	while( my $pid = waitpid(-1, WNOHANG)) { }
-	$SIG{CHLD} = \&REAPER;
 
+sub REAPER {
+	while( my $pid = waitpid(-1, WNOANG)) {
+		last if $pid == -1;
+		if ( WIFEXITED($?) ) {		#если процесс завершился
+            check_queue_workers( $pid, $q );	#запускается функция запуска обработчика задания
+        }  
+	}
 	# Функция для обработки сигнала CHLD
 };
 $SIG{CHLD} = \&REAPER;
@@ -53,28 +58,46 @@ sub start_server {
         if( defined $child ) {
 			close( $server );
 			$client -> autoflush(1);
-			if ( $in_process <= $max_receiver ) { 					# Проверяем, что количество принимающих форков не вышло за пределы допустимого ($max_receiver)
+			if ( $$receiver_count <= $max_receiver ) { 					# Проверяем, что количество принимающих форков не вышло за пределы допустимого ($max_receiver)
+				$receiver_count++;
 				print $client TYPE_CONN_OK();		# Если все нормально отвечаем клиенту TYPE_CONN_OK()
 			}
 			else {
 				print $client TYPE_CONN_ERR();		#в противном случае TYPE_CONN_ERR()
 			}
 			my $message = <$client>;		# В каждом форке читаем сообщение от клиента, анализируем его тип (TYPE_START_WORK(), TYPE_CHECK_WORK())
-			if( $message == TYPE_START_WORK() ) {
-                
+			if( $message == TYPE_START_WORK() ) {				# Если необходимо добавляем задание в очередь (проверяем получилось или нет) 
+                my @examples = <$client>;
+				my @answer = $q -> add( \@examples );
+				print $client @answer;
+				close $client;
+				$receiver_count--;
             }
 			elsif ( $message == TYPE_CHECK_WORK() ) {
-                #code
+                $message = <$client>;							# читаем id задания
+				my @answer = $q -> get_status( $message );		# Если пришли с проверкой статуса, получаем статус из очереди и отдаём клиенту
+				print $client $answer[0];						# возвращаем клиенту статус задания
+				if ( $$answer[1] == ( Local::TCP::Calc -> STATUS_DONE() or Local::TCP::Calc -> STATUS_ERROR() ) {		# В случае если статус DONE или ERROR возвращаем на клиент содержимое файла с результатом выполнения  
+					my $fh_with_answer = Local::TCP::Calc -> pack_message( $$answer[1] );				# FileHandler с запакованным сообщением
+					print $client $$answer[1];
+					unlink $fh_with_answer;
+					close ( $client );
+					$receiver_count--;
+                }
             }
-            else { close ( $client ) };
 			exit;
 		}
 	} 
 	# Не забываем проверять количество прочитанных/записанных байт из/в сеть
-	# Если необходимо добавляем задание в очередь (проверяем получилось или нет) 
-	# Если пришли с проверкой статуса, получаем статус из очереди и отдаём клиенту
-	# В случае если статус DONE или ERROR возвращаем на клиент содержимое файла с результатом выполнения
 	# После того, как результат передан на клиент зачищаем файл с результатом
+	close ( $server );
+}
+
+sub calc {
+	my $example = shift;
+	my $command = "echo '$example' | bc >> $fh_for_res";
+	my $results = `$command`;
+	return $results;
 }
 
 sub check_queue_workers {
@@ -82,9 +105,13 @@ sub check_queue_workers {
 	my $q = shift;
 
 	# Функция в которой стартует обработчик задания
-	# Должна следить за тем, что бы кол-во обработчиков не превышало мексимально разрешённого ($max_worker)
+	eval {
+		if( $in_process < $max_worker ) {			# Должна следить за тем, что бы кол-во обработчиков не превышало мексимально разрешённого ($max_worker)
+			my $worker = Local::TCP::Calc::Server::Worker->new( cur_task_id => $self, calc_ref => \&calc, max_forks => $max_forks_per_task );
+		}
+	}
+	$worker -> start( $q -> get() );
 	# Но и простаивать обработчики не должны
-	# my $worker = Local::TCP::Calc::Server::Worker->new(...);
 	# $worker->start(...);
 	# $q->to_done ...
 }
